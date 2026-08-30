@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Piedra Rubia</title>
+<style>
+:root{--tinta:#1a2e22;--papel:#f2efe6;--linea:#cfc8b6;--agua:#2f6f6b;--seco:#a8442a;--medio:#c98b1f;--verde:#3f7d3a;--gris:#8a8578}
+*{box-sizing:border-box}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:660px;margin:0 auto}
+/* --- candado --- */
+#cerrojo{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:28px 22px}
+#cerrojo h1{font-size:23px;margin:0 0 4px}
+#cerrojo p.sub{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gris);margin:0 0 26px}
+#cerrojo label{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--gris);font-weight:600;margin-bottom:6px}
+#cerrojo input{width:100%;padding:13px 14px;font-size:17px;border:1.5px solid var(--linea);border-radius:3px;background:#fff;font-family:inherit;color:var(--tinta);letter-spacing:.08em}
+#cerrojo input:focus{outline:2px solid var(--agua);outline-offset:1px;border-color:var(--agua)}
+#cerrojo button{width:100%;margin-top:12px;padding:13px;font:inherit;font-size:15px;font-weight:700;background:var(--tinta);color:var(--papel);border:0;border-radius:3px;cursor:pointer}
+#cerrojo .err{color:var(--seco);font-weight:600;font-size:13px;margin-top:10px;min-height:18px}
+#cerrojo .pie{margin-top:30px;font-size:11px;color:var(--gris);line-height:1.6;border-top:1px solid var(--linea);padding-top:14px}
+/* --- app --- */
+header{padding:14px 16px;border-bottom:2px solid var(--tinta);position:sticky;top:0;background:var(--papel);z-index:10}
+.top{display:flex;align-items:baseline;gap:9px}
+h1.t{margin:0;font-size:16px;font-weight:700;flex:1}
+.rol{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--papel);background:var(--agua);padding:3px 8px;border-radius:20px}
+.rol.j{background:var(--tinta)}
+.salir{font:inherit;font-size:11px;background:none;border:1px solid var(--linea);border-radius:3px;padding:4px 9px;cursor:pointer;color:var(--gris)}
+.sectores{display:flex;gap:5px;margin-top:11px}
+.sectores button{flex:1;padding:10px 4px;font-size:12px;font-weight:700;border:1.5px solid var(--tinta);background:transparent;color:var(--tinta);border-radius:3px;cursor:pointer;font-family:inherit;line-height:1.25}
+.sectores button small{display:block;font-size:9.5px;font-weight:500;color:var(--gris)}
+.sectores button[aria-pressed="true"]{background:var(--tinta);color:var(--papel)}
+.sectores button[aria-pressed="true"] small{color:rgba(255,255,255,.7)}
+.buscar{margin-top:9px}
+.buscar input{width:100%;padding:11px 12px;font-size:16px;border:1.5px solid var(--linea);border-radius:3px;background:#fff;font-family:inherit;color:var(--tinta)}
+.buscar input:focus{outline:2px solid var(--agua);outline-offset:1px;border-color:var(--agua)}
+.filtros{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.filtros button{padding:6px 11px;font-size:11.5px;border:1px solid var(--linea);background:#fff;border-radius:20px;cursor:pointer;font-family:inherit;color:var(--tinta)}
+.filtros button[aria-pressed="true"]{background:var(--tinta);color:var(--papel);border-color:var(--tinta)}
+.resumen{padding:9px 16px;font-size:11.5px;color:var(--gris);border-bottom:1px solid var(--linea);letter-spacing:.04em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0}
+.resumen button{font:inherit;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;background:none;border:1px solid var(--linea);border-radius:3px;padding:4px 9px;cursor:pointer;color:var(--gris);white-space:nowrap}
+.resumen button.hay{border-color:var(--agua);color:var(--agua);font-weight:700}
+ul{list-style:none;margin:0;padding:0}
+li.grupo{padding:11px 16px 6px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gris);background:rgba(0,0,0,.03);border-bottom:1px solid var(--linea)}
+li.fila{border-bottom:1px solid var(--linea)}
+.cab{display:flex;align-items:center;gap:11px;padding:14px 16px;cursor:pointer;background:none;border:0;width:100%;text-align:left;font-family:inherit;color:inherit}
+.gota{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.al_dia .gota{background:var(--verde)}.parcial .gota{background:var(--medio)}
+.sin_pago .gota{background:var(--seco)}.sin_datos .gota{background:var(--gris);opacity:.45}
+.nom{flex:1;font-size:15px;font-weight:600;line-height:1.3}
+.nom em{display:block;font-style:normal;font-size:11.5px;color:var(--gris);font-weight:500;margin-top:1px}
+.nom small{display:block;font-size:11px;color:var(--gris);font-weight:500;margin-top:2px}
+.marca{color:var(--agua);font-weight:700}
+.et{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;text-align:right;white-space:nowrap}
+.al_dia .et{color:var(--verde)}.parcial .et{color:var(--medio)}
+.sin_pago .et{color:var(--seco)}.sin_datos .et{color:var(--gris)}
+.debe{display:block;font-size:9.5px;color:var(--seco);margin-top:2px}
+.detalle{display:none;padding:2px 16px 16px 39px;font-size:13px;line-height:1.6}
+li.abierta .detalle{display:block}
+.campo{display:flex;gap:8px;padding:3px 0;border-bottom:1px dotted var(--linea);align-items:flex-start}
+.campo b{font-weight:600;min-width:78px;color:var(--gris);font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding-top:5px}
+.campo span{flex:1;padding-top:3px}
+.campo input,.campo select{flex:1;font:inherit;font-size:14px;padding:6px 8px;border:1.5px solid var(--linea);border-radius:3px;background:#fff;color:var(--tinta);min-width:0}
+.campo input:focus,.campo select:focus{outline:2px solid var(--agua);outline-offset:1px;border-color:var(--agua)}
+a{color:var(--agua);text-decoration:none;font-weight:600}
+.llamar{display:inline-block;margin-top:9px;padding:9px 16px;background:var(--agua);color:#fff;border-radius:3px;font-size:13.5px}
+.apuntes{margin-top:12px;padding-top:11px;border-top:1px solid var(--linea)}
+.apuntes label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);font-weight:600;margin-bottom:5px}
+.apuntes textarea{width:100%;min-height:60px;padding:9px 10px;font:inherit;font-size:14px;border:1.5px solid var(--linea);border-radius:3px;background:#fff;color:var(--tinta);resize:vertical}
+.apuntes .firma{font-size:10.5px;color:var(--gris);margin-top:4px;min-height:14px}
+.aviso{margin:0 16px 14px;padding:11px 12px;background:#fff;border-left:3px solid var(--medio);font-size:12px;line-height:1.55}
+.aviso.sec{border-left-color:var(--seco)}
+.vacio{padding:40px 16px;text-align:center;color:var(--gris);font-size:13px}
+footer{padding:16px;font-size:11px;color:var(--gris);line-height:1.55;border-top:1px solid var(--linea)}
+.oculto{display:none!important}
+.panel{margin:0 16px 14px;padding:12px;background:#fff;border:1px solid var(--linea);border-radius:3px;font-size:12px;line-height:1.6}
+.panel h2{margin:0 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.panel h2:not(:first-child){margin-top:14px;padding-top:12px;border-top:1px solid var(--linea)}
+.panel input[type=text],.panel input[type=password]{font:inherit;font-size:14px;padding:8px 10px;border:1.5px solid var(--linea);border-radius:3px;width:100%;margin-top:4px}
+.panel .btn{font:inherit;font-size:12.5px;font-weight:600;background:var(--agua);color:#fff;border:0;border-radius:3px;padding:9px 14px;cursor:pointer;margin:6px 6px 0 0}
+.panel .btn.sec{background:none;color:var(--tinta);border:1px solid var(--linea);font-weight:500}
+.ok{color:var(--verde);font-weight:600}.err{color:var(--seco);font-weight:600}
+@media print{header .buscar,header .filtros,header .sectores,.resumen button,.panel,.noprint,.apuntes textarea,.salir{display:none}
+header{position:static}body{background:#fff}li.fila .detalle{display:block}}
+</style></head>
+<body>
+
+<div id="cerrojo"><div class="wrap">
+  <h1>Piedra Rubia</h1>
+  <p class="sub">Comunidad de regantes</p>
+  <label for="pin">Clave de acceso</label>
+  <input id="pin" type="password" inputmode="text" autocomplete="off" placeholder="Escribe tu clave">
+  <button id="entrar">Entrar</button>
+  <div class="err" id="errPin"></div>
+  <div class="pie">Cada uno entra con su clave. La junta ve los importes; el regador, no.<br>
+  Los datos economicos van cifrados: sin la clave de la junta no se pueden leer aunque se abra el archivo por dentro.</div>
+</div></div>
+
+<div id="app" class="wrap oculto">
+<header>
+  <div class="top"><h1 class="t">Piedra Rubia</h1><span class="rol" id="rol">Regador</span><button class="salir" id="salir">Salir</button></div>
+  <div class="sectores" id="secs"></div>
+  <div class="buscar"><input id="q" type="search" placeholder="Buscar por nombre, mote, parcela o apunte" autocomplete="off"></div>
+  <div class="filtros">
+    <button data-f="todos" aria-pressed="true">Todos</button>
+    <button data-f="al_dia" aria-pressed="false">Al corriente</button>
+    <button data-f="parcial" aria-pressed="false">1a derrama</button>
+    <button data-f="sin_pago" aria-pressed="false">Sin pagar</button>
+    <button data-f="deuda" aria-pressed="false">Debe 2025</button>
+    <button data-f="apuntes" aria-pressed="false">Con apuntes</button>
+  </div>
+</header>
+<p class="resumen"><span id="res"></span>
+  <span><button id="bNotas">Apuntes</button> <button id="bPanel">Opciones</button> <button id="bImp">Imprimir</button></span></p>
+
+<div class="panel oculto" id="panel">
+  <h2 id="zonaNotas">Apuntes</h2>
+  Se guardan solo en este movil. Para que lleguen a los demas hay que exportarlos o copiarlos.
+  <div style="margin-top:8px">Quien apunta: <input type="text" id="autor" placeholder="Tu nombre"></div>
+  <button class="btn" id="bExp">Descargar apuntes</button>
+  <button class="btn" id="bCopia">Copiar para WhatsApp</button>
+  <button class="btn sec" id="bBorra">Borrar apuntes</button>
+  <div id="msgNotas" style="margin-top:6px"></div>
+
+  <div id="zonaJunta" class="oculto">
+    <h2>Guardar y repartir</h2>
+    Los cambios que hagas se guardan en este movil. Para que el regador los vea, descarga el archivo actualizado y pasaselo.
+    <button class="btn" id="bGenera">Descargar archivo actualizado</button>
+    <div id="msgGen" style="margin-top:6px"></div>
+    <h2>Cambiar claves</h2>
+    <div>Clave del regador: <input type="text" id="nPinReg" placeholder="nueva clave del regador"></div>
+    <div style="margin-top:6px">Clave de la junta: <input type="text" id="nPinJun" placeholder="nueva clave de la junta"></div>
+    <button class="btn sec" id="bClaves">Aplicar al descargar</button>
+    <div id="msgClaves" style="margin-top:6px"></div>
+  </div>
+</div>
+
+<div class="aviso sec oculto" id="avisoSec"><b>Faltan los sectores.</b> Los rellena la junta en la ficha de cada comunero.</div>
+<div class="aviso">Campana 2026 abierta: <b>1a derrama</b> significa que ha pagado la primera y le falta la segunda; no es un impago.
+Antes de cortar el riego a nadie, consulta con la junta: hay comuneros que pagan a traves de un familiar o del arrendatario.</div>
+<ul id="lista"></ul>
+<footer><span class="noprint">Los apuntes se guardan en este dispositivo. Exportalos de vez en cuando.<br></span>
+El Excel de la comunidad sigue siendo el documento valido.</footer>
+</div>
+
+<script>
+/*DATOS_INICIO*/
+const BASE = [{"n": "Alfonso Carrascosa", "e": "al_dia", "d25": false, "dir": "C/ Fuensanta, 66", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Alfonso Muñoz Hernandez", "e": "al_dia", "d25": false, "dir": "C/ Fernando III, 15 - 2º", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Alfonso Ramos Mora", "e": "sin_pago", "d25": false, "dir": "Hnas. Ancianos Desamparados, 10", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Alvaro Salas Galera", "e": "al_dia", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Ana Cameros Fernandez", "e": "sin_datos", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Ana Quesada Montoro", "e": "al_dia", "d25": false, "dir": "C/ Carrera, 42", "pob": "Iznatoraf", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 20, "parc": 250, "ha": 0.251}]}, {"n": "Antonia Manjon Alamo", "e": "parcial", "d25": false, "dir": "C/ Miraflores, 27", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 20, "parc": 268, "ha": 0.623}]}, {"n": "Antonio Díaz Lopezosa", "e": "al_dia", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "Felicidad García Morcillo", "sec": "", "parc": []}, {"n": "Antonio Javier Berrio Montoro", "e": "parcial", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "Encarnación Montoro", "sec": "", "parc": []}, {"n": "Antonio Juarez Perez", "e": "sin_pago", "d25": false, "dir": "C/ Tejares, 8", "pob": "Mogón", "tel": "", "mote": "", "nota": "finca 'Reche' (arrendada)", "sec": "", "parc": []}, {"n": "Antonio Martinez Martinez", "e": "al_dia", "d25": true, "dir": "C/ San Antón, 25", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 21, "parc": 262, "ha": 0.761}]}, {"n": "Bartolome Herreros Manjón", "e": "parcial", "d25": true, "dir": "C/ Fuensanta, 61 - 3º", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 21, "parc": 103, "ha": 0.738}, {"pol": 21, "parc": 104, "ha": 0.391}]}, {"n": "Berzosa Martinez O.e.s.p.j.", "e": "parcial", "d25": true, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "CB Sergio Roman Y Paqui Lopez", "e": "al_dia", "d25": true, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Candida Martinez Anaya", "e": "parcial", "d25": true, "dir": "C/ Lda. Nieves Pastor, 1", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 21, "parc": 270, "ha": 0.471}]}, {"n": "Cristobal Ruiz Roman", "e": "parcial", "d25": true, "dir": "C/ Saúco, 2", "pob": "Iznatoraf", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 24, "parc": 102, "ha": 0.627}, {"pol": 24, "parc": 103, "ha": 0.641}, {"pol": 24, "parc": 104, "ha": 0.392}, {"pol": 24, "parc": 89, "ha": 0.379}, {"pol": 24, "parc": 91, "ha": 0.303}, {"pol": 24, "parc": 90, "ha": 0.307}]}, {"n": "Esteban Jose Juares Mnez", "e": "sin_datos", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Fernando Mora Marin", "e": "al_dia", "d25": true, "dir": "C/ Ramón y Cajal, 136", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 20, "parc": 263, "ha": 0.977}]}, {"n": "Fernando Salas Gonzalez", "e": "al_dia", "d25": true, "dir": "C/ Minas, 49", "pob": "Villacarrillo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 21, "parc": 69, "ha": 3.881}, {"pol": 21, "parc": 70, "ha": 3.029}, {"pol": 21, "parc": 54, "ha": 0.432}]}, {"n": "Francisca Lopez Mendez", "e": "sin_datos", "d25": false, "dir": "C/ Iglesia, 4", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Francisco Cruz Martinez", "e": "parcial", "d25": true, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 18, "parc": 102, "ha": 1.156}, {"pol": 20, "parc": 101, "ha": 0.452}]}, {"n": "Francisco Martinez Herrera", "e": "al_dia", "d25": false, "dir": "C/ Príncipe, 1", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 20, "parc": 290, "ha": 0.291}]}, {"n": "Fuensanta Lopez Reche", "e": "al_dia", "d25": true, "dir": "Residencial Baleares, Manzana 3-7", "pob": "Torrevieja (Alicante)", "tel": "", "mote": "", "nota": "reside en Alicante", "sec": "", "parc": [{"pol": 21, "parc": 87, "ha": 2.464}]}, {"n": "Ignacio Herrera Mora", "e": "parcial", "d25": true, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "mismo que Ignacio Herrera Martínez (por confirmar)", "sec": "", "parc": []}, {"n": "Joaquin Segura Lopez", "e": "sin_datos", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Jorge Lara Paco", "e": "al_dia", "d25": false, "dir": "C/ Cristo de la Espiración", "pob": "Villacarrillo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Jorge Tomas Lara Ojeda", "e": "sin_datos", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Jose Marcos Glez Carrascosa", "e": "al_dia", "d25": true, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "Mª Antonia Carrascosa", "sec": "", "parc": []}, {"n": "Josefa Fernandez Gonzalez", "e": "parcial", "d25": true, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Josefa Martinez Garcia", "e": "al_dia", "d25": true, "dir": "C/ San Antón, 25", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 21, "parc": 155, "ha": 0.325}, {"pol": 22, "parc": 276, "ha": 0.325}]}, {"n": "Juan Carlos Guerrero Secaduras", "e": "al_dia", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Juan J Lopez Fernandez", "e": "parcial", "d25": false, "dir": "C/ Ronda Mirasol, 106", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 19, "parc": 129, "ha": 2.521}]}, {"n": "Juan Jose Lopez Lopez", "e": "sin_datos", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Juan Jose Lopez Ruiz", "e": "al_dia", "d25": true, "dir": "C/ Iglesia, 3", "pob": "Iznatoraf", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Juan M Huerta Garcia", "e": "al_dia", "d25": false, "dir": "C/ Estrella, 3", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 20, "parc": 54, "ha": 1.396}]}, {"n": "Juan P Garcia Arroyo", "e": "al_dia", "d25": false, "dir": "C/ Hnos. Quintero, 14 - 1º", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 20, "parc": 257, "ha": 0.511}]}, {"n": "Juan Villacañas Manjon", "e": "parcial", "d25": true, "dir": "C/ Fuensanta, 115 - 3º", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Marcelo Lopez Mendez", "e": "al_dia", "d25": false, "dir": "Avda. de Valencia, 113", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 24, "parc": 15, "ha": 2.866}, {"pol": 20, "parc": 259, "ha": 1.608}]}, {"n": "Maria Cruz Cano Torres", "e": "sin_datos", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Maria Jose Martinez Carmona", "e": "sin_datos", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Martinez Del Arco Juan Carlos", "e": "al_dia", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "Ángeles del Arco", "sec": "", "parc": []}, {"n": "Miguel Angel Martinez Magaña", "e": "al_dia", "d25": false, "dir": "Avda. Andalucía, 12 - 2º", "pob": "Iznatoraf", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 21, "parc": 154, "ha": 0.215}]}, {"n": "Pedro Antonio Medina Manjon", "e": "sin_datos", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Pedro Cameros Carrillo", "e": "sin_pago", "d25": true, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Pedro Cameros Martinez", "e": "sin_datos", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Pedro Garcia Pedrosa", "e": "al_dia", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Pedro Glez Magaña", "e": "al_dia", "d25": true, "dir": "C/ Rincón, 18", "pob": "Iznatoraf", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Pedro Gonzalez Martinez", "e": "al_dia", "d25": false, "dir": "C/ En medio, 3", "pob": "Iznatoraf", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 20, "parc": 276, "ha": 0.332}]}, {"n": "Pedro Jose Montoro Martinez", "e": "sin_pago", "d25": false, "dir": "C/ Calvario, 2", "pob": "Iznatoraf", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Pedro Jose Ruiz Sanchez", "e": "parcial", "d25": true, "dir": "C/ Galicia, 56", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Pedro Jose Sanchez Martinez", "e": "al_dia", "d25": false, "dir": "C/ Vista Alegre, 6", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "Celia Nieto", "sec": "", "parc": []}, {"n": "Pedro Muñoz Martinez", "e": "al_dia", "d25": true, "dir": "C/ Fernando III, 30", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 19, "parc": 149, "ha": 0.739}, {"pol": 18, "parc": 166, "ha": 0.094}]}, {"n": "Pedro Ruiz Román", "e": "al_dia", "d25": false, "dir": "C/ San Antón, 20", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Ramon DE LA Paz Luna", "e": "al_dia", "d25": true, "dir": "C/ Baja, 11", "pob": "Iznatoraf", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 20, "parc": 249, "ha": 0.331}, {"pol": 20, "parc": 234, "ha": 0.622}, {"pol": 20, "parc": 101, "ha": 0.486}]}, {"n": "Rosa Morales Cruz", "e": "al_dia", "d25": true, "dir": "C/ Virgen del Postigo, 18", "pob": "Iznatoraf", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 20, "parc": 89, "ha": 0.442}]}, {"n": "Rosa Sanchez Gonzalez", "e": "parcial", "d25": true, "dir": "C/ Fernando III, 13", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 21, "parc": 46, "ha": 2.361}]}, {"n": "Santiago Plaza Muñoz", "e": "al_dia", "d25": true, "dir": "C/ En medio, 16", "pob": "Iznatoraf", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 20, "parc": 93, "ha": 0.042}]}, {"n": "Santiago Zamora Ruiz", "e": "al_dia", "d25": true, "dir": "C/ En medio, 31", "pob": "Iznatoraf", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Sebastiana Fuentes Mora", "e": "al_dia", "d25": true, "dir": "C/ Iglesia, 17", "pob": "Iznatoraf", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 20, "parc": 102, "ha": 1.461}]}, {"n": "Sociedad Civil Sanchez Martinez", "e": "al_dia", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "", "sec": "", "parc": []}, {"n": "Tomas Jose Lopez Fernandez", "e": "sin_datos", "d25": false, "dir": "C/ Almería, 47", "pob": "Villanueva del Arzobispo", "tel": "", "mote": "", "nota": "", "sec": "", "parc": [{"pol": 19, "parc": 129, "ha": 2.521}]}, {"n": "Trini Sanchez", "e": "sin_datos", "d25": false, "dir": "", "pob": "", "tel": "", "mote": "", "nota": "cubre finca de Rosa Sánchez", "sec": "", "parc": []}];
+const CIFRADO = {"s": "xPBX+f4tc86zbRjXMOkNbA==", "i": "82GrrOrwTSufArqM", "c": "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"};
+const PIN_REG_HASH = "1bef5ffff81049b09db7fb4fe10f0c45fc389042ce9f92de7478fa27c64ec826";
+/*DATOS_FIN*/
+
+let DATOS=JSON.parse(JSON.stringify(BASE)), SECRETO=null, ROL=null, CLAVE_JUNTA=null;
+const SECS=["Sector 1","Sector 2","Sector 3","Rebombeo"];
+const ET={al_dia:"Al corriente",parcial:"1a derrama",sin_pago:"Sin pagar",sin_datos:"Sin datos"};
+let filtro="todos",q="",sector="todos";
+const K_DATOS="pr_uni_datos",K_NOTAS="pr_uni_apuntes",K_AUTOR="pr_uni_autor";
+let APUNTES={},AUTOR="";
+try{APUNTES=JSON.parse(localStorage.getItem(K_NOTAS))||{};}catch(e){}
+try{const g=localStorage.getItem(K_DATOS);if(g)DATOS=JSON.parse(g);}catch(e){}
+
+const enc=new TextEncoder(),dec=new TextDecoder();
+function b64d(s){const b=atob(s),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
+function b64e(a){let s="";const u=new Uint8Array(a);for(let i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);return btoa(s);}
+async function sha256hex(t){const h=await crypto.subtle.digest("SHA-256",enc.encode(t));
+  return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,"0")).join("");}
+async function derivaClave(pass,salt){
+  const km=await crypto.subtle.importKey("raw",enc.encode(pass),"PBKDF2",false,["deriveKey"]);
+  return crypto.subtle.deriveKey({name:"PBKDF2",salt:salt,iterations:250000,hash:"SHA-256"},
+    km,{name:"AES-GCM",length:256},false,["encrypt","decrypt"]);
+}
+async function descifra(blob,pass){
+  const k=await derivaClave(pass,b64d(blob.s));
+  const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64d(blob.i)},k,b64d(blob.c));
+  return JSON.parse(dec.decode(pt));
+}
+async function cifra(obj,pass){
+  const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
+  const k=await derivaClave(pass,salt);
+  const ct=await crypto.subtle.encrypt({name:"AES-GCM",iv:iv},k,enc.encode(JSON.stringify(obj)));
+  return {s:b64e(salt),i:b64e(iv),c:b64e(ct)};
+}
+
+/* ---------- candado ---------- */
+const errPin=document.getElementById("errPin");
+async function intentar(){
+  const v=document.getElementById("pin").value.trim();
+  if(!v){errPin.textContent="Escribe la clave.";return;}
+  if(!(window.crypto&&crypto.subtle)){
+    errPin.textContent="Este navegador no permite abrir el archivo cifrado. Abrelo con Chrome o Firefox.";return;}
+  errPin.textContent="Comprobando...";
+  try{
+    SECRETO=await descifra(CIFRADO,v); ROL="junta"; CLAVE_JUNTA=v; abrir(); return;
+  }catch(e){}
+  const h=await sha256hex("PR-reg-"+v);
+  if(h===PIN_REG_HASH){ROL="regador";SECRETO=null;abrir();return;}
+  errPin.textContent="Clave incorrecta.";
+}
+document.getElementById("entrar").onclick=intentar;
+document.getElementById("pin").addEventListener("keydown",e=>{if(e.key==="Enter")intentar();});
+document.getElementById("salir").onclick=()=>{ROL=null;SECRETO=null;CLAVE_JUNTA=null;
+  document.getElementById("app").classList.add("oculto");
+  document.getElementById("cerrojo").classList.remove("oculto");
+  document.getElementById("pin").value="";errPin.textContent="";};
+function abrir(){
+  document.getElementById("cerrojo").classList.add("oculto");
+  document.getElementById("app").classList.remove("oculto");
+  const r=document.getElementById("rol");
+  r.textContent=ROL==="junta"?"Junta":"Regador"; r.classList.toggle("j",ROL==="junta");
+  document.getElementById("zonaJunta").classList.toggle("oculto",ROL!=="junta");
+  AUTOR=(localStorage.getItem(K_AUTOR))||(ROL==="junta"?"Junta":"Regador");
+  document.getElementById("autor").value=AUTOR;
+  pintaContador();pintaSectores();pinta();
+}
+
+/* ---------- apuntes ---------- */
+function guardaApuntes(){try{localStorage.setItem(K_NOTAS,JSON.stringify(APUNTES));}catch(e){}}
+function guardaDatos(){try{localStorage.setItem(K_DATOS,JSON.stringify(DATOS));}catch(e){}}
+function hoy(){const d=new Date();return String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear();}
+function nApuntes(){return Object.values(APUNTES).filter(a=>a&&a.t&&a.t.trim()).length;}
+function pintaContador(){const b=document.getElementById("bNotas"),n=nApuntes();
+  b.textContent=n?("Apuntes "+n):"Apuntes";b.classList.toggle("hay",n>0);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function csvCel(s){s=String(s==null?"":s);return /[;"\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
+function sinTildes(s){return String(s==null?"":s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^\x00-\x7F]/g,"");}
+function descarga(nombre,texto,tipo){
+  const blob=new Blob([texto],{type:tipo}),url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download=nombre;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+document.getElementById("bExp").onclick=function(){
+  const f=Object.entries(APUNTES).filter(([k,a])=>a&&a.t&&a.t.trim());
+  if(!f.length){alert("Todavia no hay apuntes.");return;}
+  let csv="comunero;apunte;fecha;quien\n";
+  f.forEach(([k,a])=>{csv+=[csvCel(sinTildes(k)),csvCel(sinTildes(a.t)),csvCel(a.f||""),csvCel(sinTildes(a.a||""))].join(";")+"\n";});
+  descarga("apuntes_"+hoy().replace(/\//g,"-")+".csv",csv,"text/csv;charset=utf-8");
+};
+document.getElementById("bCopia").onclick=function(){
+  const f=Object.entries(APUNTES).filter(([k,a])=>a&&a.t&&a.t.trim());
+  if(!f.length){alert("Todavia no hay apuntes.");return;}
+  let t="APUNTES PIEDRA RUBIA - "+hoy()+"\n\n";
+  f.forEach(([k,a])=>{t+="- "+k+": "+a.t+"  ("+(a.a||"")+", "+(a.f||"")+")\n";});
+  const m=document.getElementById("msgNotas");
+  const ok=()=>m.innerHTML='<span class="ok">Copiado.</span>';
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,fb);else fb();
+  function fb(){const ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.opacity=0;
+    document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok();}catch(e){m.innerHTML='<span class="err">No se pudo copiar.</span>';}
+    document.body.removeChild(ta);}
+};
+document.getElementById("bBorra").onclick=function(){
+  if(!nApuntes()){alert("No hay apuntes.");return;}
+  if(!confirm("Se borraran TODOS los apuntes de este movil ("+nApuntes()+"). Conviene exportarlos antes."))return;
+  APUNTES={};guardaApuntes();pintaContador();pinta();};
+document.getElementById("autor").addEventListener("input",function(){
+  AUTOR=this.value.trim()||(ROL==="junta"?"Junta":"Regador");
+  try{localStorage.setItem(K_AUTOR,AUTOR);}catch(e){}});
+
+/* ---------- generar archivo actualizado ---------- */
+document.getElementById("bGenera").onclick=async function(){
+  const m=document.getElementById("msgGen");
+  try{
+    m.textContent="Preparando...";
+    let pinReg=document.getElementById("nPinReg").value.trim();
+    let pinJun=document.getElementById("nPinJun").value.trim()||CLAVE_JUNTA;
+    let hashReg=pinReg?await sha256hex("PR-reg-"+pinReg):PIN_REG_HASH;
+    const nuevoBlob=await cifra(SECRETO,pinJun);
+    let src=document.documentElement.outerHTML;
+    const ini=src.indexOf("/*DATOS_INICIO*/"),fin=src.indexOf("/*DATOS_FIN*/");
+    if(ini<0||fin<0)throw new Error("No se encuentra el bloque de datos.");
+    const nuevo="/*DATOS_INICIO*/\nconst BASE = "+JSON.stringify(DATOS)+";\nconst CIFRADO = "+JSON.stringify(nuevoBlob)+";\nconst PIN_REG_HASH = \""+hashReg+"\";\n";
+    src=src.slice(0,ini)+nuevo+src.slice(fin);
+    descarga("piedra_rubia_"+hoy().replace(/\//g,"-")+".html","<!DOCTYPE html>\n"+src,"text/html;charset=utf-8");
+    m.innerHTML='<span class="ok">Descargado. Pasaselo al regador'+(pinReg?" con su nueva clave.":".")+'</span>';
+  }catch(e){m.innerHTML='<span class="err">No se pudo generar: '+e.message+'</span>';}
+};
+document.getElementById("bClaves").onclick=function(){
+  document.getElementById("msgClaves").innerHTML='Las claves se aplicaran al pulsar "Descargar archivo actualizado".';};
+
+/* ---------- pintado ---------- */
+const lista=document.getElementById("lista"),res=document.getElementById("res");
+const eur=n=>n==null?"-":n.toLocaleString("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:0});
+function pintaSectores(){
+  const c=document.getElementById("secs"),cu=s=>DATOS.filter(d=>(d.sec||"")===s).length;
+  let b='<button data-s="todos" aria-pressed="'+(sector==="todos")+'">Todos<small>'+DATOS.length+'</small></button>';
+  SECS.forEach(s=>{const n=cu(s);if(!n&&sector!==s)return;
+    b+='<button data-s="'+s+'" aria-pressed="'+(sector===s)+'">'+s.replace("Sector ","S")+'<small>'+n+'</small></button>';});
+  const sin=DATOS.filter(d=>!d.sec).length;
+  if(sin)b+='<button data-s="sin" aria-pressed="'+(sector==="sin")+'">Sin sector<small>'+sin+'</small></button>';
+  c.innerHTML=b;
+  c.querySelectorAll("button").forEach(x=>x.addEventListener("click",()=>{sector=x.dataset.s;pintaSectores();pinta();}));
+  document.getElementById("avisoSec").classList.toggle("oculto",DATOS.some(d=>d.sec));
+}
+function coincide(d){
+  if(sector==="sin"){if(d.sec)return false;}else if(sector!=="todos"&&(d.sec||"")!==sector)return false;
+  if(filtro==="deuda"){if(!d.d25)return false;}
+  else if(filtro==="apuntes"){if(!(APUNTES[d.n]&&APUNTES[d.n].t&&APUNTES[d.n].t.trim()))return false;}
+  else if(filtro!=="todos"&&d.e!==filtro)return false;
+  if(!q)return true;
+  const t=q.toLowerCase();
+  return d.n.toLowerCase().includes(t)||(d.mote||"").toLowerCase().includes(t)
+   ||(d.parc||[]).some(x=>String(x.parc).includes(t)||(x.pol+"/"+x.parc).includes(t))
+   ||((APUNTES[d.n]&&APUNTES[d.n].t)||"").toLowerCase().includes(t);
+}
+function campoEdit(d,i,campo,etiqueta,ph){
+  return '<div class="campo"><b>'+etiqueta+'</b><input data-i="'+i+'" data-c="'+campo+'" value="'+esc(d[campo]||"")+'" placeholder="'+(ph||"")+'"></div>';
+}
+function ficha(d,i){
+  const junta=ROL==="junta", s=SECRETO?SECRETO[d.n]:null;
+  let c="";
+  if(junta){
+    c+='<div class="campo"><b>Sector</b><select data-i="'+i+'" data-c="sec">'
+      +'<option value="">sin asignar</option>'
+      +SECS.map(x=>'<option value="'+x+'"'+((d.sec||"")===x?" selected":"")+'>'+x+'</option>').join("")+'</select></div>';
+    c+='<div class="campo"><b>Parcelas</b><input data-i="'+i+'" data-c="_parc" value="'+esc((d.parc||[]).map(p=>p.pol+"/"+p.parc).join(" ; "))+'" placeholder="20/241 ; 20/92"></div>';
+    c+=campoEdit(d,i,"tel","Telefono","600 000 000");
+    c+=campoEdit(d,i,"mote","Mote","como se le conoce");
+    c+=campoEdit(d,i,"dir","Direccion","");
+    c+=campoEdit(d,i,"pob","Poblacion","");
+    c+=campoEdit(d,i,"nota","Nota","p.ej. paga por su suegro");
+    if(s){
+      c+='<div class="campo"><b>Olivas</b><span>'+(s.ol==null?"sin dato":s.ol)+'</span></div>';
+      c+='<div class="campo"><b>Cuota/ano</b><span>'+eur(s.cu)+'</span></div>';
+      c+='<div class="campo"><b>Pagado 2025</b><span>'+eur(s.p25)+(s.f25?' <small>('+s.f25+')</small>':"")+'</span></div>';
+      c+='<div class="campo"><b>Pagado 2026</b><span>'+eur(s.p26)+(s.f26?' <small>('+s.f26+')</small>':"")+'</span></div>';
+      if(s.cu!=null)c+='<div class="campo"><b>Saldo 2026</b><span>'+eur(s.p26-s.cu)+'</span></div>';
+    }
+  }else{
+    c+='<div class="campo"><b>Sector</b><span>'+(d.sec||"<i style=\'color:#8a8578\'>sin asignar</i>")+'</span></div>';
+    c+='<div class="campo"><b>Parcelas</b><span>'+((d.parc||[]).length?d.parc.map(x=>"Pol. "+x.pol+", parc. "+x.parc).join(" - "):"<i style='color:#8a8578'>sin registrar</i>")+'</span></div>';
+    if(d.dir)c+='<div class="campo"><b>Direccion</b><span>'+esc(d.dir)+(d.pob?", "+esc(d.pob):"")+'</span></div>';
+    c+='<div class="campo"><b>Telefono</b><span>'+(d.tel?'<a href="tel:'+String(d.tel).replace(/\s/g,"")+'">'+esc(d.tel)+'</a>':"-")+'</span></div>';
+    if(d.nota)c+='<div class="campo"><b>Nota junta</b><span>'+esc(d.nota)+'</span></div>';
+  }
+  const a=APUNTES[d.n],tieneAp=a&&a.t&&a.t.trim();
+  const firma=tieneAp?("Apuntado por "+esc(a.a||"?")+" el "+esc(a.f||"?")):"";
+  c+='<div class="apuntes"><label>Apuntes</label><textarea data-nom="'+esc(d.n)+'" placeholder="Lo que quieras recordar...">'+esc(tieneAp?a.t:"")+'</textarea>'
+    +'<div class="firma">'+firma+'</div></div>';
+  const p1=(d.parc||[]).length?"Pol. "+d.parc[0].pol+", parc. "+d.parc[0].parc+(d.parc.length>1?" +"+(d.parc.length-1):""):"";
+  const sub=(p1||d.sec?'<small>'+[p1,d.sec].filter(Boolean).join(" - ")+'</small>':"")+(tieneAp?'<small class="marca">Con apuntes</small>':"");
+  const tel=(!junta&&d.tel)?'<a class="llamar" href="tel:'+String(d.tel).replace(/\s/g,"")+'">Llamar</a>':"";
+  return '<li class="fila '+d.e+'"><button class="cab"><span class="gota"></span>'
+   +'<span class="nom">'+esc(d.n)+(d.mote?'<em>"'+esc(d.mote)+'"</em>':"")+sub+'</span>'
+   +'<span class="et">'+ET[d.e]+(d.d25?'<span class="debe">Debe 2025</span>':"")+'</span></button>'
+   +'<div class="detalle">'+c+tel+'</div></li>';
+}
+function pinta(){
+  const idx=DATOS.map((d,i)=>i).filter(i=>coincide(DATOS[i]));
+  res.textContent=idx.length+" de "+DATOS.length+(sector!=="todos"?" - "+(sector==="sin"?"sin sector":sector):"");
+  if(!idx.length){lista.innerHTML='<li class="vacio">No hay comuneros que coincidan.</li>';return;}
+  if(sector==="todos"&&DATOS.some(d=>d.sec)){
+    let html="";
+    SECS.concat([""]).forEach(s=>{const g=idx.filter(i=>(DATOS[i].sec||"")===s);if(!g.length)return;
+      html+='<li class="grupo">'+(s||"Sin sector")+' - '+g.length+'</li>'+g.map(i=>ficha(DATOS[i],i)).join("");});
+    lista.innerHTML=html;
+  } else lista.innerHTML=idx.map(i=>ficha(DATOS[i],i)).join("");
+  lista.querySelectorAll(".cab").forEach(b=>b.addEventListener("click",()=>{
+    b.closest("li").classList.toggle("abierta");}));
+  lista.querySelectorAll(".apuntes textarea").forEach(ta=>{
+    let t=null;
+    ta.addEventListener("input",function(){clearTimeout(t);t=setTimeout(()=>{
+      const nom=ta.dataset.nom,v=ta.value;
+      if(v.trim())APUNTES[nom]={t:v,f:hoy(),a:AUTOR};else delete APUNTES[nom];
+      guardaApuntes();pintaContador();
+      const f=ta.parentNode.querySelector(".firma");if(f)f.textContent=v.trim()?("Apuntado por "+AUTOR+" el "+hoy()):"";
+    },400);});
+  });
+  lista.querySelectorAll(".detalle input[data-c],.detalle select[data-c]").forEach(el=>{
+    let t=null;
+    el.addEventListener("input",function(){clearTimeout(t);t=setTimeout(()=>{
+      const i=+el.dataset.i,c=el.dataset.c,v=el.value;
+      if(c==="_parc"){
+        DATOS[i].parc=v.split(";").map(x=>x.trim()).filter(Boolean).map(x=>{const p=x.split("/");return{pol:(p[0]||"").trim(),parc:(p[1]||p[0]||"").trim()};});
+      } else DATOS[i][c]=v;
+      guardaDatos();
+      if(c==="sec")pintaSectores();
+    },500);});
+  });
+}
+document.getElementById("q").addEventListener("input",e=>{q=e.target.value.trim();pinta();});
+document.querySelectorAll(".filtros button").forEach(b=>b.addEventListener("click",()=>{
+  filtro=b.dataset.f;document.querySelectorAll(".filtros button").forEach(x=>x.setAttribute("aria-pressed",x===b));pinta();}));
+document.getElementById("bPanel").onclick=()=>document.getElementById("panel").classList.toggle("oculto");
+document.getElementById("bNotas").onclick=()=>{document.getElementById("panel").classList.remove("oculto");
+  document.getElementById("zonaNotas").scrollIntoView({behavior:"smooth",block:"center"});};
+document.getElementById("bImp").onclick=()=>window.print();
+</script></body></html>
