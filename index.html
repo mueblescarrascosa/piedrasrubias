@@ -2,6 +2,12 @@
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Piedra Rubia</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%20%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2213%22%20fill%3D%22%231a2e22%22%2F%3E%20%3Cpath%20d%3D%22M32%2011c0%200-13%2015.2-13%2024.2C19%2043.4%2024.8%2049%2032%2049s13-5.6%2013-13.8C45%2026.2%2032%2011%2032%2011z%22%20fill%3D%22%232f6f6b%22%2F%3E%20%3Cpath%20d%3D%22M32%2017c0%200-9%2010.8-9%2018.3%200%205.9%204%2010.1%209%2010.1z%22%20fill%3D%22%233d8783%22%20opacity%3D%22.85%22%2F%3E%20%3Ccircle%20cx%3D%2227%22%20cy%3D%2237%22%20r%3D%223.4%22%20fill%3D%22%23f2efe6%22%2F%3E%20%3Ccircle%20cx%3D%2236%22%20cy%3D%2231%22%20r%3D%222.4%22%20fill%3D%22%23f2efe6%22%20opacity%3D%22.75%22%2F%3E%20%3C%2Fsvg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%20%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2213%22%20fill%3D%22%231a2e22%22%2F%3E%20%3Cpath%20d%3D%22M32%2011c0%200-13%2015.2-13%2024.2C19%2043.4%2024.8%2049%2032%2049s13-5.6%2013-13.8C45%2026.2%2032%2011%2032%2011z%22%20fill%3D%22%232f6f6b%22%2F%3E%20%3Cpath%20d%3D%22M32%2017c0%200-9%2010.8-9%2018.3%200%205.9%204%2010.1%209%2010.1z%22%20fill%3D%22%233d8783%22%20opacity%3D%22.85%22%2F%3E%20%3Ccircle%20cx%3D%2227%22%20cy%3D%2237%22%20r%3D%223.4%22%20fill%3D%22%23f2efe6%22%2F%3E%20%3Ccircle%20cx%3D%2236%22%20cy%3D%2231%22%20r%3D%222.4%22%20fill%3D%22%23f2efe6%22%20opacity%3D%22.75%22%2F%3E%20%3C%2Fsvg%3E">
+<meta name="theme-color" content="#1a2e22">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Piedra Rubia">
+<meta name="mobile-web-app-capable" content="yes">
 <style>
 :root{--tinta:#1a2e22;--papel:#f2efe6;--linea:#cfc8b6;--agua:#2f6f6b;--seco:#a8442a;--medio:#c98b1f;--verde:#3f7d3a;--gris:#8a8578}
 *{box-sizing:border-box}
@@ -12,7 +18,6 @@ body{margin:0;background:var(--papel);color:var(--tinta);font-family:ui-sans-ser
 #entrada p.sub{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gris);margin:0 0 26px}
 #entrada label{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--gris);font-weight:600;margin:12px 0 6px}
 #entrada input{width:100%;padding:13px 14px;font-size:16px;border:1.5px solid var(--linea);border-radius:3px;background:#fff;font-family:inherit;color:var(--tinta)}
-#entrada input:focus{outline:2px solid var(--agua);outline-offset:1px;border-color:var(--agua)}
 #entrada button{width:100%;margin-top:16px;padding:13px;font:inherit;font-size:15px;font-weight:700;background:var(--tinta);color:var(--papel);border:0;border-radius:3px;cursor:pointer}
 #entrada .err{color:var(--seco);font-weight:600;font-size:13px;margin-top:10px;min-height:18px}
 #entrada .pie{margin-top:30px;font-size:11px;color:var(--gris);line-height:1.6;border-top:1px solid var(--linea);padding-top:14px}
@@ -35,9 +40,7 @@ h1.t{margin:0;font-size:16px;font-weight:700;flex:1}
 .resumen{padding:9px 16px;font-size:11.5px;color:var(--gris);border-bottom:1px solid var(--linea);letter-spacing:.04em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0}
 .resumen button{font:inherit;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;background:none;border:1px solid var(--linea);border-radius:3px;padding:4px 9px;cursor:pointer;color:var(--gris);white-space:nowrap}
 .estado{padding:6px 16px;font-size:11px;color:var(--gris);background:rgba(0,0,0,.03);border-bottom:1px solid var(--linea);min-height:26px}
-.estado.gua{color:var(--medio);font-weight:600}
-.estado.mal{color:var(--seco);font-weight:600}
-.estado.bien{color:var(--verde);font-weight:600}
+.estado.gua{color:var(--medio);font-weight:600}.estado.mal{color:var(--seco);font-weight:600}.estado.bien{color:var(--verde);font-weight:600}
 ul{list-style:none;margin:0;padding:0}
 li.grupo{padding:11px 16px 6px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gris);background:rgba(0,0,0,.03);border-bottom:1px solid var(--linea)}
 li.fila{border-bottom:1px solid var(--linea)}
@@ -56,89 +59,113 @@ li.fila{border-bottom:1px solid var(--linea)}
 .detalle{display:none;padding:2px 16px 16px 39px;font-size:13px;line-height:1.6}
 li.abierta .detalle{display:block}
 .campo{display:flex;gap:8px;padding:3px 0;border-bottom:1px dotted var(--linea);align-items:flex-start}
-.campo b{font-weight:600;min-width:78px;color:var(--gris);font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding-top:5px}
+.campo b{font-weight:600;min-width:76px;color:var(--gris);font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding-top:5px}
 .campo span{flex:1;padding-top:3px}
 .campo input,.campo select{flex:1;font:inherit;font-size:14px;padding:6px 8px;border:1.5px solid var(--linea);border-radius:3px;background:#fff;color:var(--tinta);min-width:0}
+.sec2{margin-top:12px;padding-top:11px;border-top:1px solid var(--linea)}
+.sec2 h4{margin:0 0 7px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--gris);font-weight:700}
+.pago{display:flex;gap:8px;align-items:baseline;padding:4px 0;border-bottom:1px dotted var(--linea);font-size:13px}
+.pago .f{color:var(--gris);font-size:12px;min-width:74px}
+.pago .i{font-weight:700;min-width:66px}
+.pago .c{flex:1;font-size:11.5px;color:var(--gris);line-height:1.35}
+.pago button{font:inherit;font-size:11px;background:none;border:1px solid var(--linea);border-radius:3px;padding:2px 7px;cursor:pointer;color:var(--seco)}
+.nuevo{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.nuevo input{font:inherit;font-size:14px;padding:7px 8px;border:1.5px solid var(--linea);border-radius:3px;background:#fff}
+.nuevo input.fe{flex:1 1 130px}.nuevo input.im{flex:1 1 84px}.nuevo input.co{flex:1 1 100%}
+.nuevo button{font:inherit;font-size:13px;font-weight:600;background:var(--agua);color:#fff;border:0;border-radius:3px;padding:8px 14px;cursor:pointer}
+.total{font-size:12.5px;color:var(--gris);margin-top:6px}
+.total b{color:var(--tinta)}
+.apunte{padding:6px 0;border-bottom:1px dotted var(--linea);font-size:12.5px;line-height:1.5}
+.apunte .meta{font-size:10.5px;color:var(--gris)}
+.apunte button{font:inherit;font-size:10.5px;background:none;border:1px solid var(--linea);border-radius:3px;padding:1px 6px;cursor:pointer;color:var(--seco);margin-left:6px}
+.apuntes textarea{width:100%;min-height:52px;padding:8px 10px;font:inherit;font-size:14px;border:1.5px solid var(--linea);border-radius:3px;background:#fff;color:var(--tinta);resize:vertical}
 a{color:var(--agua);text-decoration:none;font-weight:600}
 .llamar{display:inline-block;margin-top:9px;padding:9px 16px;background:var(--agua);color:#fff;border-radius:3px;font-size:13.5px}
-.apuntes{margin-top:12px;padding-top:11px;border-top:1px solid var(--linea)}
-.apuntes label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);font-weight:600;margin-bottom:5px}
-.apuntes textarea{width:100%;min-height:60px;padding:9px 10px;font:inherit;font-size:14px;border:1.5px solid var(--linea);border-radius:3px;background:#fff;color:var(--tinta);resize:vertical}
-.apuntes .firma{font-size:10.5px;color:var(--gris);margin-top:4px;min-height:14px}
-.hist{margin-top:8px;font-size:11.5px;color:var(--gris);line-height:1.5}
-.hist div{padding:3px 0;border-top:1px dotted var(--linea)}
 .aviso{margin:0 16px 14px;padding:11px 12px;background:#fff;border-left:3px solid var(--medio);font-size:12px;line-height:1.55}
 .vacio{padding:40px 16px;text-align:center;color:var(--gris);font-size:13px}
 footer{padding:16px;font-size:11px;color:var(--gris);line-height:1.55;border-top:1px solid var(--linea)}
 .oculto{display:none!important}
-@media print{header .buscar,header .filtros,header .sectores,.resumen button,.salir,.apuntes textarea{display:none}
+.barra{padding:10px 16px;border-bottom:1px solid var(--linea);background:#fff}
+.barra button{font:inherit;font-size:12.5px;font-weight:600;background:var(--agua);color:#fff;border:0;border-radius:3px;padding:8px 13px;cursor:pointer;margin-right:6px}
+.barra button.sec{background:none;color:var(--tinta);border:1px solid var(--linea);font-weight:500}
+.borrar{font:inherit;font-size:11.5px;background:none;border:1px solid var(--seco);color:var(--seco);border-radius:3px;padding:5px 10px;cursor:pointer;margin-top:10px}
+@media print{header .buscar,header .filtros,header .sectores,.resumen button,.salir,.barra,.nuevo,.apuntes textarea{display:none}
 header{position:static}body{background:#fff}li.fila .detalle{display:block}}
 </style></head>
 <body>
 
 <div id="entrada"><div class="wrap">
-  <h1>Piedra Rubia</h1>
-  <p class="sub">Comunidad de regantes</p>
-  <label for="em">Correo</label>
-  <input id="em" type="email" autocomplete="username" placeholder="tu@correo.com">
-  <label for="pw">Contrase&ntilde;a</label>
-  <input id="pw" type="password" autocomplete="current-password" placeholder="tu contrase&ntilde;a">
-  <button id="entrar">Entrar</button>
-  <div class="err" id="errLogin"></div>
-  <div class="pie">Cada uno entra con su cuenta. La junta ve los importes y puede modificar; el regador consulta y apunta.<br>
-  Los datos estan en el servidor: lo que cambia uno lo ve el otro al momento.</div>
+  <h1>Piedra Rubia</h1><p class="sub">Comunidad de regantes</p>
+  <label for="em">Correo</label><input id="em" type="email" autocomplete="username">
+  <label for="pw">Contrase&ntilde;a</label><input id="pw" type="password" autocomplete="current-password">
+  <button id="entrar">Entrar</button><div class="err" id="errLogin"></div>
+  <div class="pie">La junta ve importes y puede modificar; el regador consulta y apunta.<br>
+  Los datos estan en el servidor: lo que cambia uno lo ve el otro.</div>
 </div></div>
 
 <div id="app" class="wrap oculto">
 <header>
   <div class="top"><h1 class="t">Piedra Rubia</h1><span class="rol" id="rol"></span><button class="salir" id="salir">Salir</button></div>
   <div class="sectores" id="secs"></div>
-  <div class="buscar"><input id="q" type="search" placeholder="Buscar por nombre, mote, parcela o apunte" autocomplete="off"></div>
+  <div class="buscar"><input id="q" type="search" placeholder="Buscar nombre, mote, parcela o apunte" autocomplete="off"></div>
   <div class="filtros">
     <button data-f="todos" aria-pressed="true">Todos</button>
     <button data-f="al_dia" aria-pressed="false">Al corriente</button>
     <button data-f="parcial" aria-pressed="false">1a derrama</button>
     <button data-f="sin_pago" aria-pressed="false">Sin pagar</button>
-    <button data-f="deuda" aria-pressed="false">Debe 2025</button>
+    <button data-f="deuda" aria-pressed="false">Debe ano anterior</button>
     <button data-f="apuntes" aria-pressed="false">Con apuntes</button>
   </div>
 </header>
 <p class="resumen"><span id="res"></span>
   <span><button id="bRecarga">Actualizar</button> <button id="bImp">Imprimir</button></span></p>
 <div class="estado" id="est"></div>
-<div class="aviso">Campana 2026 abierta: <b>1a derrama</b> significa que ha pagado la primera y le falta la segunda; no es un impago.
-Antes de cortar el riego a nadie, consulta con la junta: hay comuneros que pagan a traves de un familiar o del arrendatario.</div>
+<div class="barra oculto" id="barraJunta">
+  <button id="bAlta">Anadir comunero</button>
+  <button id="bCuentas">Cuentas</button>
+  <button class="sec" id="bAjustes">Tarifa y campana</button>
+</div>
+<div class="aviso" id="avisoCamp"></div>
+<div class="panel oculto" id="panelCuentas" style="margin:0 16px 14px;padding:14px;background:#fff;border:1px solid var(--linea);border-radius:3px">
+  <h3 style="margin:0 0 10px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)">Cuentas de la comunidad</h3>
+  <div id="cuentasCuerpo" style="font-size:13px;line-height:1.6">Cargando...</div>
+  <h4 style="margin:16px 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--gris)">Apuntar un gasto</h4>
+  <div class="nuevo">
+    <input class="fe" type="date" id="gFecha"><input class="im" id="gImporte" placeholder="Importe" inputmode="decimal">
+    <select id="gCat" style="flex:1 1 140px;font:inherit;font-size:14px;padding:7px 8px;border:1.5px solid var(--linea);border-radius:3px;background:#fff">
+      <option>Electricidad</option><option>Mantenimiento</option><option>Seguro</option>
+      <option>Impuestos</option><option>Banco</option><option>Transferencia</option><option>Otros</option></select>
+    <input class="co" id="gCon" placeholder="Concepto">
+    <button id="bAddGasto">Anadir gasto</button>
+  </div>
+  <div id="gMsg" style="margin-top:6px;font-size:12px"></div>
+</div>
 <ul id="lista"></ul>
-<footer>Los cambios se guardan en el servidor y los ve todo el mundo. El Excel sigue siendo el documento valido de la comunidad.</footer>
+<footer>Los cambios se guardan en el servidor. El Excel sigue siendo el documento valido.</footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* ============================================================
-   CONFIGURACION - cambia estas dos lineas por las de tu proyecto
-   Supabase -> Project Settings -> API
-   ============================================================ */
 const SUPABASE_URL  = "https://oocgrmqhqynleemcqctl.supabase.co";
 const SUPABASE_ANON = "sb_publishable_hlPhA74MyonjKfr7C3KEKQ_G8zUI5yP";
-/* La clave "anon" es publica a proposito: quien protege los datos
-   son las politicas RLS del servidor, no el secreto de esta clave. */
-
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-let ROL=null, COM=[], FIN={}, APU={}, USUARIO="";
-let filtro="todos", q="", sector="todos";
+
+let ROL=null, COM=[], FIN={}, PAG={}, APU={}, AJU={}, USUARIO="", CAMPANA=2026;
+let filtro="todos", q="", sector="todos", ABIERTO=null;
 const SECS=["Sector 1","Sector 2","Sector 3","Rebombeo"];
 const ET={al_dia:"Al corriente",parcial:"1a derrama",sin_pago:"Sin pagar",sin_datos:"Sin datos"};
 const $=id=>document.getElementById(id);
 const eur=n=>n==null?"-":Number(n).toLocaleString("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:0});
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
-function aviso(t,clase){const e=$("est");e.textContent=t;e.className="estado"+(clase?" "+clase:"");}
+function aviso(t,c){const e=$("est");e.textContent=t;e.className="estado"+(c?" "+c:"");}
+function fecha(d){if(!d)return "";const p=String(d).slice(0,10).split("-");return p[2]+"/"+p[1]+"/"+p[0];}
+function hoyISO(){return new Date().toISOString().slice(0,10);}
 
-/* ---------- entrar / salir ---------- */
 async function entrar(){
-  const err=$("errLogin"); err.textContent="Comprobando...";
+  const err=$("errLogin");err.textContent="Comprobando...";
   const {error}=await sb.auth.signInWithPassword({email:$("em").value.trim(),password:$("pw").value});
   if(error){err.textContent="No se ha podido entrar: "+error.message;return;}
-  err.textContent=""; await arranca();
+  err.textContent="";await arranca();
 }
 $("entrar").onclick=entrar;
 $("pw").addEventListener("keydown",e=>{if(e.key==="Enter")entrar();});
@@ -148,61 +175,127 @@ async function arranca(){
   const {data:{user}}=await sb.auth.getUser();
   if(!user){$("entrada").classList.remove("oculto");$("app").classList.add("oculto");return;}
   USUARIO=user.email;
-  const {data:perf,error:ep}=await sb.from("perfiles").select("rol,nombre").eq("id",user.id).single();
-  if(ep||!perf){$("errLogin").textContent="Tu cuenta no tiene rol asignado. Anadelo en la tabla 'perfiles'.";
-    await sb.auth.signOut();return;}
-  ROL=perf.rol;
+  const {data:p,error:e}=await sb.from("perfiles").select("rol").eq("id",user.id).single();
+  if(e||!p){$("errLogin").textContent="Tu cuenta no tiene rol asignado (paso 5 de la guia).";await sb.auth.signOut();return;}
+  ROL=p.rol;
   $("entrada").classList.add("oculto");$("app").classList.remove("oculto");
   const r=$("rol");r.textContent=ROL==="junta"?"Junta":"Regador";r.classList.toggle("j",ROL==="junta");
+  $("barraJunta").classList.toggle("oculto",ROL!=="junta");
   await carga();
 }
+
 async function carga(){
   aviso("Cargando...");
+  const {data:aj}=await sb.from("ajustes").select("*");
+  AJU={};(aj||[]).forEach(a=>AJU[a.clave]=a.valor);
+  CAMPANA=parseInt(AJU.campana_actual||"2026",10);
+  $("avisoCamp").innerHTML="Campana <b>"+CAMPANA+"</b>. Tarifa: "+(AJU.euros_oliva_derrama||2)+" EUR por oliva y derrama, "
+    +(AJU.derramas_ano||2)+" derramas al ano. <b>1a derrama</b> significa que ha pagado la primera y le falta la segunda; no es un impago.";
+  document.querySelector('[data-f="deuda"]').textContent="Debe "+(CAMPANA-1);
+
   const {data:com,error:e1}=await sb.from("comuneros").select("*").order("nombre");
   if(e1){aviso("Error al cargar: "+e1.message,"mal");return;}
   COM=com||[];
-  FIN={};
+  FIN={};PAG={};
   if(ROL==="junta"){
-    const {data:fin}=await sb.from("finanzas").select("*");
-    (fin||[]).forEach(f=>FIN[f.comunero_id]=f);
+    const {data:f}=await sb.from("finanzas").select("*");(f||[]).forEach(x=>FIN[x.comunero_id]=x);
+    const {data:p}=await sb.from("pagos").select("*").order("fecha",{ascending:false});
+    (p||[]).forEach(x=>{(PAG[x.comunero_id]=PAG[x.comunero_id]||[]).push(x);});
   }
-  const {data:ap}=await sb.from("apuntes").select("*").order("creado",{ascending:false});
-  APU={}; (ap||[]).forEach(a=>{(APU[a.comunero_id]=APU[a.comunero_id]||[]).push(a);});
+  const {data:a}=await sb.from("apuntes").select("*").order("creado",{ascending:false});
+  APU={};(a||[]).forEach(x=>{(APU[x.comunero_id]=APU[x.comunero_id]||[]).push(x);});
   aviso("Actualizado a las "+new Date().toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"}),"bien");
-  pintaSectores(); pinta();
+  pintaSectores();pinta();
 }
 $("bRecarga").onclick=carga;
 $("bImp").onclick=()=>window.print();
 
-/* ---------- guardar cambios ---------- */
+/* ---------- guardar ---------- */
 async function guardaCampo(id,campo,valor){
   aviso("Guardando...","gua");
-  const upd={}; upd[campo]=valor;
-  const {error}=await sb.from("comuneros").update(upd).eq("id",id);
+  const u={};u[campo]=(valor===""?null:valor);
+  if(campo==="paga_por_id")u[campo]=valor?parseInt(valor,10):null;
+  const {error}=await sb.from("comuneros").update(u).eq("id",id);
   if(error){aviso("NO se ha guardado: "+error.message,"mal");return false;}
-  const c=COM.find(x=>x.id===id); if(c)c[campo]=valor;
-  aviso("Guardado","bien"); return true;
+  const c=COM.find(x=>x.id===id);if(c)c[campo]=u[campo];
+  aviso("Guardado","bien");return true;
 }
-async function guardaApunte(id,texto){
-  const lista=APU[id]||[], mio=lista.find(a=>a.autor===USUARIO);
+async function guardaOlivas(id,valor){
+  const n=valor===""?null:parseInt(valor,10);
+  if(valor!==""&&(isNaN(n)||n<0)){aviso("Las olivas deben ser un numero","mal");return;}
+  aviso("Guardando olivas...","gua");
+  const {data,error}=await sb.from("finanzas").upsert({comunero_id:id,olivas:n},{onConflict:"comunero_id"}).select().single();
+  if(error){aviso("NO se ha guardado: "+error.message,"mal");return;}
+  FIN[id]=data;
+  const {data:c}=await sb.from("comuneros").select("estado,debe_2025").eq("id",id).single();
+  if(c){const x=COM.find(y=>y.id===id);if(x){x.estado=c.estado;x.debe_2025=c.debe_2025;}}
+  aviso("Olivas guardadas. Cuota: "+eur(data.cuota),"bien");refresca(id);
+}
+async function anadePago(id,f,imp,con,pp){
+  const n=parseFloat(String(imp).replace(",","."));
+  if(!f){aviso("Falta la fecha del pago","mal");return;}
+  if(isNaN(n)||n<=0){aviso("El importe no es valido","mal");return;}
+  aviso("Guardando pago...","gua");
+  const {data,error}=await sb.from("pagos").insert({comunero_id:id,fecha:f,importe:n,concepto:con||"",pagado_por:pp||""}).select().single();
+  if(error){aviso("NO se ha guardado: "+error.message,"mal");return;}
+  (PAG[id]=PAG[id]||[]).unshift(data);
+  PAG[id].sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  const {data:c}=await sb.from("comuneros").select("estado,debe_2025").eq("id",id).single();
+  if(c){const x=COM.find(y=>y.id===id);if(x){x.estado=c.estado;x.debe_2025=c.debe_2025;}}
+  aviso("Pago anadido","bien");refresca(id);
+}
+async function borraPago(id,pid){
+  if(!confirm("Borrar este pago?"))return;
+  aviso("Borrando...","gua");
+  const {error}=await sb.from("pagos").delete().eq("id",pid);
+  if(error){aviso("No se pudo borrar: "+error.message,"mal");return;}
+  PAG[id]=(PAG[id]||[]).filter(p=>p.id!==pid);
+  const {data:c}=await sb.from("comuneros").select("estado,debe_2025").eq("id",id).single();
+  if(c){const x=COM.find(y=>y.id===id);if(x){x.estado=c.estado;x.debe_2025=c.debe_2025;}}
+  aviso("Pago borrado","bien");refresca(id);
+}
+async function anadeApunte(id,texto,fh){
+  if(!texto.trim()){aviso("El apunte esta vacio","mal");return;}
   aviso("Guardando apunte...","gua");
-  if(!texto.trim()){
-    if(mio){const {error}=await sb.from("apuntes").delete().eq("id",mio.id);
-      if(error){aviso("No se pudo borrar: "+error.message,"mal");return;}
-      APU[id]=lista.filter(a=>a.id!==mio.id);}
-    aviso("Apunte borrado","bien");return;
-  }
-  if(mio){
-    const {error}=await sb.from("apuntes").update({texto:texto,creado:new Date().toISOString()}).eq("id",mio.id);
-    if(error){aviso("No se pudo guardar: "+error.message,"mal");return;}
-    mio.texto=texto;mio.creado=new Date().toISOString();
-  }else{
-    const {data,error}=await sb.from("apuntes").insert({comunero_id:id,texto:texto,autor:USUARIO}).select().single();
-    if(error){aviso("No se pudo guardar: "+error.message,"mal");return;}
-    (APU[id]=APU[id]||[]).unshift(data);
-  }
-  aviso("Apunte guardado","bien");
+  const {data,error}=await sb.from("apuntes").insert({comunero_id:id,texto:texto.trim(),autor:USUARIO,fecha_hecho:fh||null}).select().single();
+  if(error){aviso("NO se ha guardado: "+error.message,"mal");return;}
+  (APU[id]=APU[id]||[]).unshift(data);
+  aviso("Apunte guardado","bien");refresca(id);
 }
+async function borraApunte(id,aid){
+  if(!confirm("Borrar este apunte?"))return;
+  const {error}=await sb.from("apuntes").delete().eq("id",aid);
+  if(error){aviso("No se pudo borrar: "+error.message,"mal");return;}
+  APU[id]=(APU[id]||[]).filter(a=>a.id!==aid);
+  aviso("Apunte borrado","bien");refresca(id);
+}
+$("bAlta").onclick=async function(){
+  const n=prompt("Nombre completo del comunero nuevo:");
+  if(!n||!n.trim())return;
+  aviso("Creando...","gua");
+  const {data,error}=await sb.from("comuneros").insert({nombre:n.trim(),estado:"sin_datos"}).select().single();
+  if(error){aviso("No se pudo crear: "+error.message,"mal");return;}
+  COM.push(data);COM.sort((a,b)=>a.nombre.localeCompare(b.nombre,"es"));
+  ABIERTO=data.id;aviso("Comunero creado. Rellena sus datos.","bien");pintaSectores();pinta();
+};
+async function borraComunero(id,nombre){
+  if(!confirm("Borrar a "+nombre+" y TODOS sus pagos y apuntes? No se puede deshacer."))return;
+  if(!confirm("Seguro del todo? Escribe mentalmente que si. Se borra definitivamente."))return;
+  const {error}=await sb.from("comuneros").delete().eq("id",id);
+  if(error){aviso("No se pudo borrar: "+error.message,"mal");return;}
+  COM=COM.filter(c=>c.id!==id);aviso("Comunero borrado","bien");pintaSectores();pinta();
+}
+$("bAjustes").onclick=async function(){
+  const t=prompt("Euros por oliva y derrama:",AJU.euros_oliva_derrama||"2");if(t===null)return;
+  const d=prompt("Derramas al ano:",AJU.derramas_ano||"2");if(d===null)return;
+  const c=prompt("Campana actual (ano):",AJU.campana_actual||"2026");if(c===null)return;
+  aviso("Guardando ajustes...","gua");
+  const filas=[{clave:"euros_oliva_derrama",valor:String(t).trim()},{clave:"derramas_ano",valor:String(d).trim()},{clave:"campana_actual",valor:String(c).trim()}];
+  const {error}=await sb.from("ajustes").upsert(filas,{onConflict:"clave"});
+  if(error){aviso("No se pudo guardar: "+error.message,"mal");return;}
+  alert("Ajustes guardados. Si has cambiado la tarifa, entra en cualquier ficha y vuelve a guardar las olivas para recalcular su cuota.");
+  await carga();
+};
 
 /* ---------- pintado ---------- */
 function pintaSectores(){
@@ -215,7 +308,7 @@ function pintaSectores(){
   c.innerHTML=b;
   c.querySelectorAll("button").forEach(x=>x.addEventListener("click",()=>{sector=x.dataset.s;pintaSectores();pinta();}));
 }
-function txtApuntes(id){return (APU[id]||[]).map(a=>a.texto).join(" ");}
+function txtAp(id){return (APU[id]||[]).map(a=>a.texto).join(" ");}
 function coincide(d){
   if(sector==="sin"){if(d.sector)return false;}else if(sector!=="todos"&&(d.sector||"")!==sector)return false;
   if(filtro==="deuda"){if(!d.debe_2025)return false;}
@@ -224,69 +317,162 @@ function coincide(d){
   if(!q)return true;
   const t=q.toLowerCase();
   return (d.nombre||"").toLowerCase().includes(t)||(d.mote||"").toLowerCase().includes(t)
-   ||(d.parcelas||"").toLowerCase().includes(t)||txtApuntes(d.id).toLowerCase().includes(t);
+   ||(d.parcelas||"").toLowerCase().includes(t)||txtAp(d.id).toLowerCase().includes(t);
 }
-function parcTxt(s){return (s||"").split(";").map(x=>x.trim()).filter(Boolean).map(x=>{const p=x.split("/");return "Pol. "+p[0]+", parc. "+(p[1]||"");}).join(" - ");}
+function parcTxt(s){return (s||"").split(";").map(x=>x.trim()).filter(Boolean)
+  .map(x=>{const p=x.split("/");return "Pol. "+p[0]+", parc. "+(p[1]||"");}).join(" - ");}
+function sumaAno(id,ano){return (PAG[id]||[]).filter(p=>String(p.fecha).slice(0,4)==String(ano))
+  .reduce((s,p)=>s+Number(p.importe),0);}
+
 function ficha(d){
-  const junta=ROL==="junta", f=FIN[d.id];
+  const junta=ROL==="junta", f=FIN[d.id], lp=PAG[d.id]||[], la=APU[d.id]||[];
+  const paga=d.paga_por_id?COM.find(x=>x.id===d.paga_por_id):null;
+  const lePagan=COM.filter(x=>x.paga_por_id===d.id);
   let c="";
   if(junta){
     c+='<div class="campo"><b>Sector</b><select data-id="'+d.id+'" data-c="sector"><option value="">sin asignar</option>'
       +SECS.map(x=>'<option value="'+x+'"'+((d.sector||"")===x?" selected":"")+'>'+x+'</option>').join("")+'</select></div>';
-    [["parcelas","Parcelas","20/241 ; 20/92"],["telefono","Telefono","600 000 000"],["mote","Mote","como se le conoce"],
-     ["direccion","Direccion",""],["poblacion","Poblacion",""],["nota","Nota","p.ej. paga por su suegro"]].forEach(x=>{
+    c+='<div class="campo"><b>Paga finca de</b><select data-id="'+d.id+'" data-c="paga_por_id"><option value="">nadie, es la suya</option>'
+      +COM.filter(x=>x.id!==d.id).map(x=>'<option value="'+x.id+'"'+(d.paga_por_id===x.id?" selected":"")+'>'+esc(x.nombre)+'</option>').join("")+'</select></div>';
+    if(lePagan.length)c+='<div class="campo"><b>Le paga</b><span>'+lePagan.map(x=>esc(x.nombre)).join(", ")+'</span></div>';
+    [["parcelas","Parcelas","20/241 ; 20/92"],["telefono","Telefono","600 000 000"],["mote","Mote",""],
+     ["direccion","Direccion",""],["poblacion","Poblacion",""],["nota","Nota",""]].forEach(x=>{
       c+='<div class="campo"><b>'+x[1]+'</b><input data-id="'+d.id+'" data-c="'+x[0]+'" value="'+esc(d[x[0]])+'" placeholder="'+x[2]+'"></div>';});
-    if(f){
-      c+='<div class="campo"><b>Olivas</b><span>'+(f.olivas==null?"sin dato":f.olivas)+'</span></div>';
-      c+='<div class="campo"><b>Cuota/ano</b><span>'+eur(f.cuota)+'</span></div>';
-      c+='<div class="campo"><b>Pagado 2025</b><span>'+eur(f.pagado_2025)+(f.fechas_2025?' <small>('+esc(f.fechas_2025)+')</small>':"")+'</span></div>';
-      c+='<div class="campo"><b>Pagado 2026</b><span>'+eur(f.pagado_2026)+(f.fechas_2026?' <small>('+esc(f.fechas_2026)+')</small>':"")+'</span></div>';
-      if(f.cuota!=null)c+='<div class="campo"><b>Saldo 2026</b><span>'+eur(f.pagado_2026-f.cuota)+'</span></div>';
-    }
+    c+='<div class="campo"><b>Olivas</b><input data-id="'+d.id+'" data-ol="1" value="'+(f&&f.olivas!=null?f.olivas:"")+'" placeholder="numero de olivas" inputmode="numeric"></div>';
+    c+='<div class="campo"><b>Cuota/ano</b><span>'+(f&&f.cuota!=null?eur(f.cuota):"se calcula al poner las olivas")+'</span></div>';
+
+    c+='<div class="sec2"><h4>Pagos</h4>';
+    if(lp.length){
+      c+=lp.map(p=>'<div class="pago"><span class="f">'+fecha(p.fecha)+'</span><span class="i">'+eur(p.importe)+'</span>'
+        +'<span class="c">'+esc(p.pagado_por||p.concepto||"")+'</span>'
+        +'<button data-bp="'+p.id+'" data-id="'+d.id+'">Borrar</button></div>').join("");
+    } else c+='<div style="color:#8a8578;font-size:12.5px">Todavia no hay pagos apuntados.</div>';
+    const sA=sumaAno(d.id,CAMPANA), sB=sumaAno(d.id,CAMPANA-1);
+    c+='<div class="total">'+CAMPANA+': <b>'+eur(sA)+'</b>'+(f&&f.cuota!=null?" de "+eur(f.cuota)+" ("+(sA-f.cuota>=0?"+":"")+eur(sA-f.cuota)+")":"")
+      +' &nbsp;|&nbsp; '+(CAMPANA-1)+': <b>'+eur(sB)+'</b></div>';
+    c+='<div class="nuevo"><input class="fe" type="date" data-np="fecha" data-id="'+d.id+'" value="'+hoyISO()+'">'
+      +'<input class="im" data-np="importe" data-id="'+d.id+'" placeholder="Importe" inputmode="decimal">'
+      +'<input class="co" data-np="quien" data-id="'+d.id+'" placeholder="Quien lo paga o concepto (opcional)">'
+      +'<button data-ap="'+d.id+'">Anadir pago</button></div></div>';
   }else{
     c+='<div class="campo"><b>Sector</b><span>'+(d.sector||"<i style=\'color:#8a8578\'>sin asignar</i>")+'</span></div>';
     c+='<div class="campo"><b>Parcelas</b><span>'+(d.parcelas?parcTxt(d.parcelas):"<i style='color:#8a8578'>sin registrar</i>")+'</span></div>';
+    if(paga)c+='<div class="campo"><b>Riega</b><span>la finca de '+esc(paga.nombre)+'</span></div>';
+    if(lePagan.length)c+='<div class="campo"><b>Le paga</b><span>'+lePagan.map(x=>esc(x.nombre)).join(", ")+'</span></div>';
     if(d.direccion)c+='<div class="campo"><b>Direccion</b><span>'+esc(d.direccion)+(d.poblacion?", "+esc(d.poblacion):"")+'</span></div>';
     c+='<div class="campo"><b>Telefono</b><span>'+(d.telefono?'<a href="tel:'+String(d.telefono).replace(/\s/g,"")+'">'+esc(d.telefono)+'</a>':"-")+'</span></div>';
     if(d.nota)c+='<div class="campo"><b>Nota junta</b><span>'+esc(d.nota)+'</span></div>';
   }
-  const lista=APU[d.id]||[], mio=lista.find(a=>a.autor===USUARIO), otros=lista.filter(a=>a.autor!==USUARIO);
-  c+='<div class="apuntes"><label>Tu apunte</label><textarea data-id="'+d.id+'" placeholder="Lo que quieras recordar...">'+esc(mio?mio.texto:"")+'</textarea>'
-   +'<div class="firma">'+(mio?"Guardado el "+new Date(mio.creado).toLocaleDateString("es-ES"):"")+'</div>';
-  if(otros.length){c+='<div class="hist">'+otros.map(a=>'<div><b>'+esc(a.autor)+'</b>: '+esc(a.texto)+'</div>').join("")+'</div>';}
-  c+='</div>';
+
+  c+='<div class="sec2 apuntes"><h4>Apuntes</h4>';
+  if(la.length)c+=la.map(a=>'<div class="apunte">'+esc(a.texto)
+    +'<div class="meta">'+esc(a.autor)+' &middot; '+(a.fecha_hecho?"del "+fecha(a.fecha_hecho)+", ":"")+"apuntado el "+fecha(a.creado)
+    +((a.autor===USUARIO||ROL==="junta")?'<button data-ba="'+a.id+'" data-id="'+d.id+'">Borrar</button>':"")+'</div></div>').join("");
+  else c+='<div style="color:#8a8578;font-size:12.5px">Sin apuntes.</div>';
+  c+='<div class="nuevo"><textarea data-na="texto" data-id="'+d.id+'" placeholder="p. ej. el 12 de agosto vino a pagar su yerno"></textarea>'
+    +'<input class="fe" type="date" data-na="fecha" data-id="'+d.id+'" title="fecha del hecho, si no es hoy">'
+    +'<button data-aa="'+d.id+'">Anadir apunte</button></div></div>';
+
+  if(junta)c+='<button class="borrar" data-bc="'+d.id+'" data-nom="'+esc(d.nombre)+'">Borrar comunero</button>';
+
   const p1=(d.parcelas||"").split(";")[0].trim();
   const sub=(p1||d.sector?'<small>'+[p1?"Pol. "+p1.replace("/",", parc. "):"",d.sector].filter(Boolean).join(" - ")+'</small>':"")
-    +(lista.length?'<small class="marca">Con apuntes</small>':"");
+    +(la.length?'<small class="marca">Con apuntes</small>':"")
+    +(paga?'<small>paga la finca de '+esc(paga.nombre)+'</small>':"");
   const tel=(!junta&&d.telefono)?'<a class="llamar" href="tel:'+String(d.telefono).replace(/\s/g,"")+'">Llamar</a>':"";
-  return '<li class="fila '+(d.estado||"sin_datos")+'"><button class="cab"><span class="gota"></span>'
+  return '<li class="fila '+(d.estado||"sin_datos")+'" data-fid="'+d.id+'"><button class="cab"><span class="gota"></span>'
    +'<span class="nom">'+esc(d.nombre)+(d.mote?'<em>"'+esc(d.mote)+'"</em>':"")+sub+'</span>'
-   +'<span class="et">'+(ET[d.estado]||"Sin datos")+(d.debe_2025?'<span class="debe">Debe 2025</span>':"")+'</span></button>'
+   +'<span class="et">'+(ET[d.estado]||"Sin datos")+(d.debe_2025?'<span class="debe">Debe '+(CAMPANA-1)+'</span>':"")+'</span></button>'
    +'<div class="detalle">'+c+tel+'</div></li>';
 }
+function refresca(id){ABIERTO=id;pinta();}
 function pinta(){
   const vis=COM.filter(coincide);
   $("res").textContent=vis.length+" de "+COM.length+(sector!=="todos"?" - "+(sector==="sin"?"sin sector":sector):"");
   const L=$("lista");
   if(!vis.length){L.innerHTML='<li class="vacio">No hay comuneros que coincidan.</li>';return;}
   if(sector==="todos"&&COM.some(d=>d.sector)){
-    let html="";
-    SECS.concat([""]).forEach(s=>{const g=vis.filter(d=>(d.sector||"")===s);if(!g.length)return;
-      html+='<li class="grupo">'+(s||"Sin sector")+' - '+g.length+'</li>'+g.map(ficha).join("");});
-    L.innerHTML=html;
+    let h="";SECS.concat([""]).forEach(s=>{const g=vis.filter(d=>(d.sector||"")===s);if(!g.length)return;
+      h+='<li class="grupo">'+(s||"Sin sector")+' - '+g.length+'</li>'+g.map(ficha).join("");});
+    L.innerHTML=h;
   } else L.innerHTML=vis.map(ficha).join("");
-  L.querySelectorAll(".cab").forEach(b=>b.addEventListener("click",()=>b.closest("li").classList.toggle("abierta")));
-  L.querySelectorAll(".apuntes textarea").forEach(ta=>{let t=null;
-    ta.addEventListener("input",()=>{clearTimeout(t);t=setTimeout(()=>guardaApunte(+ta.dataset.id,ta.value),700);});});
+  if(ABIERTO){const li=L.querySelector('[data-fid="'+ABIERTO+'"]');
+    if(li){li.classList.add("abierta");li.scrollIntoView({block:"nearest"});}}
+  L.querySelectorAll(".cab").forEach(b=>b.addEventListener("click",()=>{
+    const li=b.closest("li");const ab=li.classList.toggle("abierta");
+    ABIERTO=ab?parseInt(li.dataset.fid,10):null;}));
   L.querySelectorAll(".detalle input[data-c],.detalle select[data-c]").forEach(el=>{let t=null;
     el.addEventListener("input",()=>{clearTimeout(t);t=setTimeout(async()=>{
       const ok=await guardaCampo(+el.dataset.id,el.dataset.c,el.value);
-      if(ok&&el.dataset.c==="sector")pintaSectores();
+      if(ok&&(el.dataset.c==="sector"||el.dataset.c==="paga_por_id")){pintaSectores();refresca(+el.dataset.id);}
     },700);});});
+  L.querySelectorAll("[data-ol]").forEach(el=>{let t=null;
+    el.addEventListener("input",()=>{clearTimeout(t);t=setTimeout(()=>guardaOlivas(+el.dataset.id,el.value.trim()),800);});});
+  L.querySelectorAll("[data-ap]").forEach(b=>b.addEventListener("click",()=>{
+    const id=+b.dataset.ap,d=b.closest(".nuevo");
+    const f=d.querySelector('[data-np="fecha"]').value,i=d.querySelector('[data-np="importe"]').value,
+          w=d.querySelector('[data-np="quien"]').value;
+    anadePago(id,f,i,w,w);}));
+  L.querySelectorAll("[data-bp]").forEach(b=>b.addEventListener("click",()=>borraPago(+b.dataset.id,+b.dataset.bp)));
+  L.querySelectorAll("[data-aa]").forEach(b=>b.addEventListener("click",()=>{
+    const id=+b.dataset.aa,d=b.closest(".nuevo");
+    anadeApunte(id,d.querySelector('[data-na="texto"]').value,d.querySelector('[data-na="fecha"]').value);}));
+  L.querySelectorAll("[data-ba]").forEach(b=>b.addEventListener("click",()=>borraApunte(+b.dataset.id,+b.dataset.ba)));
+  L.querySelectorAll("[data-bc]").forEach(b=>b.addEventListener("click",()=>borraComunero(+b.dataset.bc,b.dataset.nom)));
 }
 $("q").addEventListener("input",e=>{q=e.target.value.trim();pinta();});
 document.querySelectorAll(".filtros button").forEach(b=>b.addEventListener("click",()=>{
   filtro=b.dataset.f;document.querySelectorAll(".filtros button").forEach(x=>x.setAttribute("aria-pressed",x===b));pinta();}));
+
+/* ---------- cuentas ---------- */
+let GAS=[];
+async function cargaGastos(){
+  const {data,error}=await sb.from("gastos").select("*").order("fecha",{ascending:false});
+  if(error){$("cuentasCuerpo").innerHTML='<span style="color:var(--seco)">No se pudieron cargar los gastos: '+error.message+'</span>';return;}
+  GAS=data||[];pintaCuentas();
+}
+function pintaCuentas(){
+  const anos=[...new Set(GAS.map(g=>String(g.fecha).slice(0,4)).concat(
+    Object.values(PAG).flat().map(p=>String(p.fecha).slice(0,4))))].sort();
+  let h='<table style="width:100%;border-collapse:collapse;font-size:13px">'
+   +'<tr style="text-align:right"><th style="text-align:left;padding:4px 0">Ano</th><th>Ingresos</th><th>Gastos</th><th>Saldo</th></tr>';
+  let ti=0,tg=0;
+  anos.forEach(a=>{
+    const ing=Object.values(PAG).flat().filter(p=>String(p.fecha).slice(0,4)===a).reduce((s,p)=>s+Number(p.importe),0);
+    const gas=GAS.filter(g=>String(g.fecha).slice(0,4)===a).reduce((s,g)=>s+Number(g.importe),0);
+    ti+=ing;tg+=gas;
+    const sal=ing-gas;
+    h+='<tr style="text-align:right;border-top:1px dotted var(--linea)"><td style="text-align:left;padding:4px 0">'+a+'</td>'
+     +'<td>'+eur(ing)+'</td><td>'+eur(gas)+'</td><td style="font-weight:700;color:'+(sal<0?"var(--seco)":"var(--verde)")+'">'+eur(sal)+'</td></tr>';
+  });
+  h+='<tr style="text-align:right;border-top:2px solid var(--tinta);font-weight:700"><td style="text-align:left;padding:4px 0">Total</td>'
+   +'<td>'+eur(ti)+'</td><td>'+eur(tg)+'</td><td style="color:'+((ti-tg)<0?"var(--seco)":"var(--verde)")+'">'+eur(ti-tg)+'</td></tr></table>';
+  const cuotaTot=Object.values(FIN).reduce((s,f)=>s+(Number(f.cuota)||0),0);
+  const cobrado=Object.values(PAG).flat().filter(p=>String(p.fecha).slice(0,4)===String(CAMPANA)).reduce((s,p)=>s+Number(p.importe),0);
+  h+='<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--linea)">'
+   +'Si pagaran todos: <b>'+eur(cuotaTot)+'</b> al ano &nbsp;|&nbsp; cobrado en '+CAMPANA+': <b>'+eur(cobrado)+'</b>'
+   +'<br><span style="color:var(--seco)">Pendiente de cobrar: <b>'+eur(cuotaTot-cobrado)+'</b></span></div>';
+  const porCat={};GAS.forEach(g=>{porCat[g.categoria]=(porCat[g.categoria]||0)+Number(g.importe);});
+  const cats=Object.entries(porCat).sort((a,b)=>b[1]-a[1]);
+  if(cats.length)h+='<div style="margin-top:10px;font-size:12.5px;color:var(--gris)">Gasto por concepto: '
+    +cats.map(c=>esc(c[0])+" <b style='color:var(--tinta)'>"+eur(c[1])+"</b>").join(" &middot; ")+'</div>';
+  $("cuentasCuerpo").innerHTML=h;
+}
+$("bCuentas").onclick=async function(){
+  const p=$("panelCuentas");p.classList.toggle("oculto");
+  if(!p.classList.contains("oculto")){$("gFecha").value=hoyISO();await cargaGastos();}
+};
+$("bAddGasto").onclick=async function(){
+  const f=$("gFecha").value,i=parseFloat(String($("gImporte").value).replace(",",".")),
+        cat=$("gCat").value,con=$("gCon").value;
+  const m=$("gMsg");
+  if(!f){m.innerHTML='<span style="color:var(--seco)">Falta la fecha</span>';return;}
+  if(isNaN(i)||i===0){m.innerHTML='<span style="color:var(--seco)">Importe no valido</span>';return;}
+  const {error}=await sb.from("gastos").insert({fecha:f,importe:i,categoria:cat,concepto:con});
+  if(error){m.innerHTML='<span style="color:var(--seco)">No se pudo guardar: '+error.message+'</span>';return;}
+  m.innerHTML='<span style="color:var(--verde)">Gasto anadido</span>';
+  $("gImporte").value="";$("gCon").value="";await cargaGastos();
+};
 
 arranca();
 </script></body></html>
