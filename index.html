@@ -27,6 +27,24 @@ h1.t{margin:0;font-size:16px;font-weight:700;flex:1}
 .rol{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--papel);background:var(--agua);padding:3px 8px;border-radius:20px}
 .rol.j{background:var(--tinta)}
 .salir{font:inherit;font-size:11px;background:none;border:1px solid var(--linea);border-radius:3px;padding:4px 9px;cursor:pointer;color:var(--gris)}
+.nav{display:flex;gap:5px;margin-top:11px}
+.nav button{flex:1;padding:9px 4px;font-size:13px;font-weight:700;border:0;border-bottom:2.5px solid transparent;background:none;color:var(--gris);cursor:pointer;font-family:inherit}
+.nav button[aria-pressed="true"]{color:var(--tinta);border-bottom-color:var(--agua)}
+.tarj{margin:0 16px 12px;padding:13px;background:#fff;border:1px solid var(--linea);border-radius:3px}
+.tarj h3{margin:0 0 9px;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--gris)}
+.secfila{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dotted var(--linea)}
+.secfila .nm{flex:1;font-weight:600;font-size:14px}
+.secfila .dd{font-size:12px;color:var(--gris);text-align:right;min-width:96px}
+.secfila .dd b{display:block;font-size:15px}
+.secfila button{font:inherit;font-size:12px;font-weight:600;background:var(--agua);color:#fff;border:0;border-radius:3px;padding:7px 12px;cursor:pointer}
+.dd.viejo b{color:var(--seco)}
+.inc{padding:9px 0;border-bottom:1px dotted var(--linea);font-size:13px;line-height:1.5}
+.inc .cab2{display:flex;gap:8px;align-items:baseline}
+.inc .tg{font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;padding:2px 6px;border-radius:20px;white-space:nowrap}
+.tg.urgente{background:var(--seco);color:#fff}.tg.normal{background:var(--medio);color:#fff}.tg.leve{background:var(--linea);color:var(--tinta)}
+.tg.resuelta{background:var(--verde);color:#fff}
+.inc .meta{font-size:10.5px;color:var(--gris);margin-top:2px}
+.inc button{font:inherit;font-size:11px;background:none;border:1px solid var(--linea);border-radius:3px;padding:2px 8px;cursor:pointer;color:var(--agua);margin-left:6px}
 .sectores{display:flex;gap:5px;margin-top:11px}
 .sectores button{flex:1;padding:10px 4px;font-size:12px;font-weight:700;border:1.5px solid var(--tinta);background:transparent;color:var(--tinta);border-radius:3px;cursor:pointer;font-family:inherit;line-height:1.25}
 .sectores button small{display:block;font-size:9.5px;font-weight:500;color:var(--gris)}
@@ -100,12 +118,14 @@ header{position:static}body{background:#fff}li.fila .detalle{display:block}}
   <label for="pw">Contrase&ntilde;a</label><input id="pw" type="password" autocomplete="current-password">
   <button id="entrar">Entrar</button><div class="err" id="errLogin"></div>
   <div class="pie">La junta ve importes y puede modificar; el regador consulta y apunta.<br>
-  Los datos estan en el servidor: lo que cambia uno lo ve el otro.</div>
+  Los datos estan en el servidor: lo que cambia uno lo ve el otro.
+  <div style="margin-top:10px">&copy; 2026 Comunidad de Regantes Piedra Rubia &middot; v<span id="verEntrada"></span><br>Recopilacion y datos: Alfonso Carrascosa</div></div>
 </div></div>
 
 <div id="app" class="wrap oculto">
 <header>
   <div class="top"><h1 class="t">Piedra Rubia</h1><span class="rol" id="rol"></span><button class="salir" id="salir">Salir</button></div>
+  <div class="nav" id="nav"><button data-v="com" aria-pressed="true">Comuneros</button><button data-v="campo" aria-pressed="false">Campo</button></div>
   <div class="sectores" id="secs"></div>
   <div class="buscar"><input id="q" type="search" placeholder="Buscar nombre, mote, parcela o apunte" autocomplete="off"></div>
   <div class="filtros">
@@ -141,11 +161,40 @@ header{position:static}body{background:#fff}li.fila .detalle{display:block}}
   <div id="gMsg" style="margin-top:6px;font-size:12px"></div>
 </div>
 <ul id="lista"></ul>
-<footer>Los cambios se guardan en el servidor. El Excel sigue siendo el documento valido.</footer>
+<div id="vCampo" class="oculto">
+  <div class="tarj">
+    <h3>Riegos - cuanto lleva cada sector sin agua</h3>
+    <div id="secRiego">Cargando...</div>
+    <div style="margin-top:10px;font-size:11.5px;color:var(--gris)">Pulsa "Regado hoy" cuando termines. Si fue otro dia, cambia la fecha antes.</div>
+    <div class="nuevo"><input class="fe" type="date" id="rFecha"><input class="im" id="rHoras" placeholder="Horas (opcional)" inputmode="decimal"></div>
+    <div id="rMsg" style="margin-top:6px;font-size:12px"></div>
+    <h3 style="margin-top:14px">Ultimos riegos</h3>
+    <div id="rLista" style="font-size:12.5px"></div>
+  </div>
+  <div class="tarj">
+    <h3>Avisos y averias</h3>
+    <div id="incLista">Cargando...</div>
+    <div class="nuevo" style="margin-top:10px">
+      <select id="iSector" style="flex:1 1 120px;font:inherit;font-size:14px;padding:7px 8px;border:1.5px solid var(--linea);border-radius:3px;background:#fff"><option value="">Sin sector</option></select>
+      <select id="iGrav" style="flex:1 1 110px;font:inherit;font-size:14px;padding:7px 8px;border:1.5px solid var(--linea);border-radius:3px;background:#fff"><option value="normal">Normal</option><option value="urgente">Urgente</option><option value="leve">Leve</option></select>
+      <input class="co" id="iDesc" placeholder="Que pasa: fuga en la tuberia del camino...">
+      <button id="bAddInc">Apuntar aviso</button>
+    </div>
+    <div id="iMsg" style="margin-top:6px;font-size:12px"></div>
+  </div>
+</div>
+<footer>Los cambios se guardan en el servidor. El Excel sigue siendo el documento valido.
+<div style="margin-top:9px;padding-top:9px;border-top:1px solid var(--linea)">
+&copy; 2026 Comunidad de Regantes Piedra Rubia &middot; CIF G-23440183 &middot; Villanueva del Arzobispo (Jaen)<br>Recopilacion y datos: <b>Alfonso Carrascosa</b><br>
+Uso interno de la comunidad. Contiene datos personales de los comuneros: no difundir.<br>
+<span id="pieVer"></span>
+</div></footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const APP_VERSION    = "1.3";      // version de esta aplicacion
+const ESQUEMA_MINIMO = "1.3";      // SQL que necesita para funcionar entera
 const SUPABASE_URL  = "https://oocgrmqhqynleemcqctl.supabase.co";
 const SUPABASE_ANON = "sb_publishable_hlPhA74MyonjKfr7C3KEKQ_G8zUI5yP";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -155,6 +204,12 @@ let filtro="todos", q="", sector="todos", ABIERTO=null;
 const SECS=["Sector 1","Sector 2","Sector 3","Rebombeo"];
 const ET={al_dia:"Al corriente",parcial:"1a derrama",sin_pago:"Sin pagar",sin_datos:"Sin datos"};
 const $=id=>document.getElementById(id);
+function cmpVer(a,b){
+  const x=String(a).split(".").map(Number),y=String(b).split(".").map(Number);
+  for(let i=0;i<Math.max(x.length,y.length);i++){
+    const d=(x[i]||0)-(y[i]||0); if(d) return d<0?-1:1;
+  } return 0;
+}
 const eur=n=>n==null?"-":Number(n).toLocaleString("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:0});
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function aviso(t,c){const e=$("est");e.textContent=t;e.className="estado"+(c?" "+c:"");}
@@ -189,6 +244,13 @@ async function carga(){
   const {data:aj}=await sb.from("ajustes").select("*");
   AJU={};(aj||[]).forEach(a=>AJU[a.clave]=a.valor);
   CAMPANA=parseInt(AJU.campana_actual||"2026",10);
+  const esq=AJU.esquema_version||"1.0";
+  const pv=$("pieVer");
+  if(pv)pv.innerHTML="Aplicacion v"+APP_VERSION+" &middot; base de datos v"+esq;
+  if(cmpVer(esq,ESQUEMA_MINIMO)<0){
+    aviso("La base de datos esta en la version "+esq+" y esta aplicacion necesita la "+ESQUEMA_MINIMO
+      +". Falta ejecutar algun archivo SQL; puede que algo no funcione.","mal");
+  }
   $("avisoCamp").innerHTML="Campana <b>"+CAMPANA+"</b>. Tarifa: "+(AJU.euros_oliva_derrama||2)+" EUR por oliva y derrama, "
     +(AJU.derramas_ano||2)+" derramas al ano. <b>1a derrama</b> significa que ha pagado la primera y le falta la segunda; no es un impago.";
   document.querySelector('[data-f="deuda"]').textContent="Debe "+(CAMPANA-1);
@@ -474,5 +536,96 @@ $("bAddGasto").onclick=async function(){
   $("gImporte").value="";$("gCon").value="";await cargaGastos();
 };
 
+
+/* ---------- pantalla de campo ---------- */
+let VISTA="com", RIE=[], INC=[];
+function cambiaVista(v){
+  VISTA=v;
+  document.querySelectorAll("#nav button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===v));
+  const com=(v==="com");
+  $("lista").classList.toggle("oculto",!com);
+  $("vCampo").classList.toggle("oculto",com);
+  document.querySelector("header .sectores").classList.toggle("oculto",!com);
+  document.querySelector("header .buscar").classList.toggle("oculto",!com);
+  document.querySelector("header .filtros").classList.toggle("oculto",!com);
+  $("avisoCamp").classList.toggle("oculto",!com);
+  if($("barraJunta"))$("barraJunta").classList.toggle("oculto",!com||ROL!=="junta");
+  if(!com)cargaCampo();
+}
+document.querySelectorAll("#nav button").forEach(b=>b.addEventListener("click",()=>cambiaVista(b.dataset.v)));
+
+async function cargaCampo(){
+  $("rFecha").value=hoyISO();
+  const sel=$("iSector");
+  if(sel.options.length<=1)SECS.forEach(s=>{const o=document.createElement("option");o.value=s;o.textContent=s;sel.appendChild(o);});
+  const {data:r,error:e1}=await sb.from("riegos").select("*").order("fecha",{ascending:false}).limit(60);
+  if(e1){$("secRiego").innerHTML='<span style="color:var(--seco)">No se pudo cargar: '+e1.message+'. Falta ejecutar 08_gestion.sql?</span>';}
+  else{RIE=r||[];pintaRiegos();}
+  const {data:i,error:e2}=await sb.from("incidencias").select("*").order("fecha",{ascending:false}).limit(50);
+  if(e2){$("incLista").innerHTML='<span style="color:var(--seco)">No se pudo cargar: '+e2.message+'</span>';}
+  else{INC=i||[];pintaIncid();}
+}
+function pintaRiegos(){
+  const hoy=new Date();
+  let h="";
+  SECS.forEach(s=>{
+    const ult=RIE.filter(r=>r.sector===s).map(r=>r.fecha).sort().pop();
+    let txt="nunca",cls="";
+    if(ult){const d=Math.round((hoy-new Date(ult))/86400000);
+      txt=(d===0?"hoy":d===1?"ayer":"hace "+d+" dias");if(d>=10)cls=" viejo";}
+    h+='<div class="secfila"><span class="nm">'+s+'</span>'
+     +'<span class="dd'+cls+'"><b>'+txt+'</b>'+(ult?fecha(ult):"sin registrar")+'</span>'
+     +'<button data-rs="'+s+'">Regado</button></div>';
+  });
+  $("secRiego").innerHTML=h;
+  $("secRiego").querySelectorAll("[data-rs]").forEach(b=>b.addEventListener("click",()=>apuntaRiego(b.dataset.rs)));
+  $("rLista").innerHTML=RIE.slice(0,12).map(r=>'<div style="padding:3px 0;border-bottom:1px dotted var(--linea)">'
+    +fecha(r.fecha)+' &middot; <b>'+esc(r.sector)+'</b>'+(r.horas?' &middot; '+r.horas+' h':"")
+    +' <button data-br="'+r.id+'" style="font:inherit;font-size:10.5px;background:none;border:1px solid var(--linea);border-radius:3px;padding:1px 6px;cursor:pointer;color:var(--seco);margin-left:6px">Borrar</button></div>').join("")
+    ||'<span style="color:var(--gris)">Aun no hay riegos apuntados.</span>';
+  $("rLista").querySelectorAll("[data-br]").forEach(b=>b.addEventListener("click",async()=>{
+    if(!confirm("Borrar este riego?"))return;
+    await sb.from("riegos").delete().eq("id",+b.dataset.br);cargaCampo();}));
+}
+async function apuntaRiego(sector){
+  const f=$("rFecha").value||hoyISO(),hh=parseFloat(String($("rHoras").value).replace(",","."));
+  const m=$("rMsg");m.textContent="Guardando...";
+  const {error}=await sb.from("riegos").insert({fecha:f,sector:sector,horas:isNaN(hh)?null:hh,apuntado_por:USUARIO});
+  if(error){m.innerHTML='<span style="color:var(--seco)">No se pudo guardar: '+error.message+'</span>';return;}
+  m.innerHTML='<span style="color:var(--verde)">Apuntado: '+sector+' el '+fecha(f)+'</span>';
+  $("rHoras").value="";cargaCampo();
+}
+function pintaIncid(){
+  const ab=INC.filter(i=>i.estado!=="resuelta"),re=INC.filter(i=>i.estado==="resuelta");
+  let h="";
+  if(!INC.length)h='<span style="color:var(--gris)">No hay avisos.</span>';
+  ab.forEach(i=>{h+=inc1(i);});
+  if(re.length)h+='<div style="margin-top:8px;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--gris)">Resueltos</div>'+re.slice(0,6).map(inc1).join("");
+  $("incLista").innerHTML=h;
+  $("incLista").querySelectorAll("[data-ri]").forEach(b=>b.addEventListener("click",async()=>{
+    await sb.from("incidencias").update({estado:"resuelta",resuelta_el:hoyISO()}).eq("id",+b.dataset.ri);cargaCampo();}));
+  $("incLista").querySelectorAll("[data-bi]").forEach(b=>b.addEventListener("click",async()=>{
+    if(!confirm("Borrar este aviso?"))return;
+    await sb.from("incidencias").delete().eq("id",+b.dataset.bi);cargaCampo();}));
+}
+function inc1(i){
+  const res=i.estado==="resuelta";
+  return '<div class="inc"><div class="cab2"><span class="tg '+(res?"resuelta":esc(i.gravedad))+'">'+(res?"Resuelta":esc(i.gravedad))+'</span>'
+   +'<span style="flex:1">'+esc(i.descripcion)+'</span></div>'
+   +'<div class="meta">'+fecha(i.fecha)+(i.sector?' &middot; '+esc(i.sector):"")+' &middot; '+esc(i.abierta_por||"")
+   +(res?' &middot; cerrada el '+fecha(i.resuelta_el):' <button data-ri="'+i.id+'">Marcar resuelta</button>')
+   +(ROL==="junta"?' <button data-bi="'+i.id+'">Borrar</button>':"")+'</div></div>';
+}
+$("bAddInc").onclick=async function(){
+  const d=$("iDesc").value.trim(),m=$("iMsg");
+  if(!d){m.innerHTML='<span style="color:var(--seco)">Escribe que pasa</span>';return;}
+  m.textContent="Guardando...";
+  const {error}=await sb.from("incidencias").insert({fecha:hoyISO(),sector:$("iSector").value,
+    gravedad:$("iGrav").value,descripcion:d,abierta_por:USUARIO});
+  if(error){m.innerHTML='<span style="color:var(--seco)">No se pudo guardar: '+error.message+'</span>';return;}
+  m.innerHTML='<span style="color:var(--verde)">Aviso apuntado</span>';$("iDesc").value="";cargaCampo();
+};
+
+const ve=$("verEntrada"); if(ve)ve.textContent=APP_VERSION;
 arranca();
 </script></body></html>
