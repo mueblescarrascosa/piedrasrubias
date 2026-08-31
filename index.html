@@ -193,8 +193,8 @@ Uso interno de la comunidad. Contiene datos personales de los comuneros: no difu
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const APP_VERSION    = "1.3";      // version de esta aplicacion
-const ESQUEMA_MINIMO = "1.3";      // SQL que necesita para funcionar entera
+const APP_VERSION    = "1.5";      // version de esta aplicacion
+const ESQUEMA_MINIMO = "1.4";      // SQL que necesita para funcionar entera
 const SUPABASE_URL  = "https://oocgrmqhqynleemcqctl.supabase.co";
 const SUPABASE_ANON = "sb_publishable_hlPhA74MyonjKfr7C3KEKQ_G8zUI5yP";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -293,12 +293,14 @@ async function guardaOlivas(id,valor){
   if(c){const x=COM.find(y=>y.id===id);if(x){x.estado=c.estado;x.debe_2025=c.debe_2025;}}
   aviso("Olivas guardadas. Cuota: "+eur(data.cuota),"bien");refresca(id);
 }
-async function anadePago(id,f,imp,con,pp){
+async function anadePago(id,f,imp,con,ppid){
   const n=parseFloat(String(imp).replace(",","."));
   if(!f){aviso("Falta la fecha del pago","mal");return;}
   if(isNaN(n)||n<=0){aviso("El importe no es valido","mal");return;}
   aviso("Guardando pago...","gua");
-  const {data,error}=await sb.from("pagos").insert({comunero_id:id,fecha:f,importe:n,concepto:con||"",pagado_por:pp||""}).select().single();
+  const quien=ppid?COM.find(x=>x.id===+ppid):null;
+  const {data,error}=await sb.from("pagos").insert({comunero_id:id,fecha:f,importe:n,
+    concepto:con||"",pagado_por:quien?quien.nombre:"",pagado_por_id:ppid?+ppid:null}).select().single();
   if(error){aviso("NO se ha guardado: "+error.message,"mal");return;}
   (PAG[id]=PAG[id]||[]).unshift(data);
   PAG[id].sort((a,b)=>b.fecha.localeCompare(a.fecha));
@@ -406,7 +408,7 @@ function ficha(d){
     c+='<div class="sec2"><h4>Pagos</h4>';
     if(lp.length){
       c+=lp.map(p=>'<div class="pago"><span class="f">'+fecha(p.fecha)+'</span><span class="i">'+eur(p.importe)+'</span>'
-        +'<span class="c">'+esc(p.pagado_por||p.concepto||"")+'</span>'
+        +'<span class="c">'+(p.pagado_por_id&&p.pagado_por_id!==d.id?'<b>lo pago '+esc(p.pagado_por||"?")+'</b>':esc(p.pagado_por||p.concepto||""))+'</span>'
         +'<button data-bp="'+p.id+'" data-id="'+d.id+'">Borrar</button></div>').join("");
     } else c+='<div style="color:#8a8578;font-size:12.5px">Todavia no hay pagos apuntados.</div>';
     const sA=sumaAno(d.id,CAMPANA), sB=sumaAno(d.id,CAMPANA-1);
@@ -414,8 +416,21 @@ function ficha(d){
       +' &nbsp;|&nbsp; '+(CAMPANA-1)+': <b>'+eur(sB)+'</b></div>';
     c+='<div class="nuevo"><input class="fe" type="date" data-np="fecha" data-id="'+d.id+'" value="'+hoyISO()+'">'
       +'<input class="im" data-np="importe" data-id="'+d.id+'" placeholder="Importe" inputmode="decimal">'
-      +'<input class="co" data-np="quien" data-id="'+d.id+'" placeholder="Quien lo paga o concepto (opcional)">'
-      +'<button data-ap="'+d.id+'">Anadir pago</button></div></div>';
+      +'<select class="co" data-np="pagador" data-id="'+d.id+'" style="font:inherit;font-size:14px;padding:7px 8px;border:1.5px solid var(--linea);border-radius:3px;background:#fff">'
+      +'<option value="">Lo paga el mismo</option>'
+      +COM.filter(x=>x.id!==d.id).map(x=>'<option value="'+x.id+'">Lo paga '+esc(x.nombre)+'</option>').join("")+'</select>'
+      +'<input class="co" data-np="quien" data-id="'+d.id+'" placeholder="Concepto (opcional)">'
+      +'<button data-ap="'+d.id+'">Anadir pago</button></div>';
+    const hechos=Object.values(PAG).flat().filter(p=>p.pagado_por_id===d.id&&p.comunero_id!==d.id);
+    if(hechos.length){
+      const tot=hechos.reduce((s,p)=>s+Number(p.importe),0);
+      const porQuien={};hechos.forEach(p=>{const t=COM.find(x=>x.id===p.comunero_id);
+        const k=t?t.nombre:"?";porQuien[k]=(porQuien[k]||0)+Number(p.importe);});
+      c+='<div class="total" style="margin-top:8px;padding-top:8px;border-top:1px dotted var(--linea)">'
+       +'Ademas ha pagado por otros: <b>'+eur(tot)+'</b><br>'
+       +Object.entries(porQuien).map(x=>esc(x[0])+": "+eur(x[1])).join(" &middot; ")+'</div>';
+    }
+    c+='</div>';
   }else{
     c+='<div class="campo"><b>Sector</b><span>'+(d.sector||"<i style=\'color:#8a8578\'>sin asignar</i>")+'</span></div>';
     c+='<div class="campo"><b>Parcelas</b><span>'+(d.parcelas?parcTxt(d.parcelas):"<i style='color:#8a8578'>sin registrar</i>")+'</span></div>';
@@ -473,8 +488,9 @@ function pinta(){
   L.querySelectorAll("[data-ap]").forEach(b=>b.addEventListener("click",()=>{
     const id=+b.dataset.ap,d=b.closest(".nuevo");
     const f=d.querySelector('[data-np="fecha"]').value,i=d.querySelector('[data-np="importe"]').value,
-          w=d.querySelector('[data-np="quien"]').value;
-    anadePago(id,f,i,w,w);}));
+          w=d.querySelector('[data-np="quien"]').value,
+          pp=d.querySelector('[data-np="pagador"]').value;
+    anadePago(id,f,i,w,pp);}));
   L.querySelectorAll("[data-bp]").forEach(b=>b.addEventListener("click",()=>borraPago(+b.dataset.id,+b.dataset.bp)));
   L.querySelectorAll("[data-aa]").forEach(b=>b.addEventListener("click",()=>{
     const id=+b.dataset.aa,d=b.closest(".nuevo");
