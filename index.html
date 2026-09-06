@@ -127,7 +127,7 @@ header{position:static}body{background:#fff}li.fila .detalle{display:block}}
   <div class="top"><h1 class="t">Piedra Rubia</h1><span class="rol" id="rol"></span><button class="salir" id="salir">Salir</button></div>
   <div class="nav" id="nav"><button data-v="com" aria-pressed="true">Comuneros</button><button data-v="campo" aria-pressed="false">Campo</button></div>
   <div class="sectores" id="secs"></div>
-  <div class="buscar"><input id="q" type="search" placeholder="Buscar nombre, mote, parcela o apunte" autocomplete="off"></div>
+  <div class="buscar"><input id="q" type="search" placeholder="Buscar por nombre, mote, parcela o tipo" autocomplete="off"></div>
   <div class="filtros">
     <button data-f="todos" aria-pressed="true">Todos</button>
     <button data-f="al_dia" aria-pressed="false">Al corriente</button>
@@ -135,6 +135,9 @@ header{position:static}body{background:#fff}li.fila .detalle{display:block}}
     <button data-f="sin_pago" aria-pressed="false">Sin pagar</button>
     <button data-f="deuda" aria-pressed="false">Debe ano anterior</button>
     <button data-f="apuntes" aria-pressed="false">Con apuntes</button>
+    <button data-f="arrendatario" aria-pressed="false">Arrendatarios</button>
+    <button data-f="pagador" aria-pressed="false">Solo pagan</button>
+    <button data-f="sin_definir" aria-pressed="false">Tipo sin definir</button>
   </div>
 </header>
 <p class="resumen"><span id="res"></span>
@@ -193,8 +196,8 @@ Uso interno de la comunidad. Contiene datos personales de los comuneros: no difu
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const APP_VERSION    = "1.5";      // version de esta aplicacion
-const ESQUEMA_MINIMO = "1.4";      // SQL que necesita para funcionar entera
+const APP_VERSION    = "1.7";      // version de esta aplicacion
+const ESQUEMA_MINIMO = "1.6";      // SQL que necesita para funcionar entera
 const SUPABASE_URL  = "https://oocgrmqhqynleemcqctl.supabase.co";
 const SUPABASE_ANON = "sb_publishable_hlPhA74MyonjKfr7C3KEKQ_G8zUI5yP";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -212,6 +215,8 @@ function cmpVer(a,b){
 }
 const eur=n=>n==null?"-":Number(n).toLocaleString("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:0});
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function sinac(s){return String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
+const TIPO={titular:"Titular",arrendatario:"Arrendatario",pagador:"Solo paga",heredero:"Heredero",sin_definir:""};
 function aviso(t,c){const e=$("est");e.textContent=t;e.className="estado"+(c?" "+c:"");}
 function fecha(d){if(!d)return "";const p=String(d).slice(0,10).split("-");return p[2]+"/"+p[1]+"/"+p[0];}
 function hoyISO(){return new Date().toISOString().slice(0,10);}
@@ -299,8 +304,10 @@ async function anadePago(id,f,imp,con,ppid){
   if(isNaN(n)||n<=0){aviso("El importe no es valido","mal");return;}
   aviso("Guardando pago...","gua");
   const quien=ppid?COM.find(x=>x.id===+ppid):null;
+  // pagado_por: si es un comunero, su nombre; si no, el texto libre (mujer, hijo, yerno...)
+  const quienTxt = quien ? quien.nombre : (con||"");
   const {data,error}=await sb.from("pagos").insert({comunero_id:id,fecha:f,importe:n,
-    concepto:con||"",pagado_por:quien?quien.nombre:"",pagado_por_id:ppid?+ppid:null}).select().single();
+    concepto:con||"",pagado_por:quienTxt,pagado_por_id:ppid?+ppid:null}).select().single();
   if(error){aviso("NO se ha guardado: "+error.message,"mal");return;}
   (PAG[id]=PAG[id]||[]).unshift(data);
   PAG[id].sort((a,b)=>b.fecha.localeCompare(a.fecha));
@@ -377,11 +384,13 @@ function coincide(d){
   if(sector==="sin"){if(d.sector)return false;}else if(sector!=="todos"&&(d.sector||"")!==sector)return false;
   if(filtro==="deuda"){if(!d.debe_2025)return false;}
   else if(filtro==="apuntes"){if(!(APU[d.id]||[]).length)return false;}
+  else if(["titular","arrendatario","pagador","heredero","sin_definir"].includes(filtro)){if((d.tipo||"sin_definir")!==filtro)return false;}
   else if(filtro!=="todos"&&d.estado!==filtro)return false;
   if(!q)return true;
-  const t=q.toLowerCase();
-  return (d.nombre||"").toLowerCase().includes(t)||(d.mote||"").toLowerCase().includes(t)
-   ||(d.parcelas||"").toLowerCase().includes(t)||txtAp(d.id).toLowerCase().includes(t);
+  const t=sinac(q);
+  return sinac(d.nombre).includes(t)||sinac(d.mote).includes(t)
+   ||sinac(d.parcelas).includes(t)||sinac(txtAp(d.id)).includes(t)
+   ||sinac(TIPO[d.tipo]||"").includes(t);
 }
 function parcTxt(s){return (s||"").split(";").map(x=>x.trim()).filter(Boolean)
   .map(x=>{const p=x.split("/");return "Pol. "+p[0]+", parc. "+(p[1]||"");}).join(" - ");}
@@ -394,6 +403,8 @@ function ficha(d){
   const lePagan=COM.filter(x=>x.paga_por_id===d.id);
   let c="";
   if(junta){
+    c+='<div class="campo"><b>Tipo</b><select data-id="'+d.id+'" data-c="tipo">'
+      +['titular','arrendatario','pagador','heredero','sin_definir'].map(x=>'<option value="'+x+'"'+((d.tipo||"sin_definir")===x?" selected":"")+'>'+(TIPO[x]||"Sin definir")+'</option>').join("")+'</select></div>';
     c+='<div class="campo"><b>Sector</b><select data-id="'+d.id+'" data-c="sector"><option value="">sin asignar</option>'
       +SECS.map(x=>'<option value="'+x+'"'+((d.sector||"")===x?" selected":"")+'>'+x+'</option>').join("")+'</select></div>';
     c+='<div class="campo"><b>Paga finca de</b><select data-id="'+d.id+'" data-c="paga_por_id"><option value="">nadie, es la suya</option>'
@@ -408,7 +419,7 @@ function ficha(d){
     c+='<div class="sec2"><h4>Pagos</h4>';
     if(lp.length){
       c+=lp.map(p=>'<div class="pago"><span class="f">'+fecha(p.fecha)+'</span><span class="i">'+eur(p.importe)+'</span>'
-        +'<span class="c">'+(p.pagado_por_id&&p.pagado_por_id!==d.id?'<b>lo pago '+esc(p.pagado_por||"?")+'</b>':esc(p.pagado_por||p.concepto||""))+'</span>'
+        +'<span class="c">'+(p.pagado_por&&(p.pagado_por_id!==d.id)?'<b>lo ingreso '+esc(p.pagado_por)+'</b>':esc(p.pagado_por||p.concepto||""))+'</span>'
         +'<button data-bp="'+p.id+'" data-id="'+d.id+'">Borrar</button></div>').join("");
     } else c+='<div style="color:#8a8578;font-size:12.5px">Todavia no hay pagos apuntados.</div>';
     const sA=sumaAno(d.id,CAMPANA), sB=sumaAno(d.id,CAMPANA-1);
@@ -419,7 +430,7 @@ function ficha(d){
       +'<select class="co" data-np="pagador" data-id="'+d.id+'" style="font:inherit;font-size:14px;padding:7px 8px;border:1.5px solid var(--linea);border-radius:3px;background:#fff">'
       +'<option value="">Lo paga el mismo</option>'
       +COM.filter(x=>x.id!==d.id).map(x=>'<option value="'+x.id+'">Lo paga '+esc(x.nombre)+'</option>').join("")+'</select>'
-      +'<input class="co" data-np="quien" data-id="'+d.id+'" placeholder="Concepto (opcional)">'
+      +'<input class="co" data-np="quien" data-id="'+d.id+'" placeholder="Quien lo ingresa (mujer, hijo...) o concepto">'
       +'<button data-ap="'+d.id+'">Anadir pago</button></div>';
     const hechos=Object.values(PAG).flat().filter(p=>p.pagado_por_id===d.id&&p.comunero_id!==d.id);
     if(hechos.length){
@@ -432,6 +443,7 @@ function ficha(d){
     }
     c+='</div>';
   }else{
+    if(d.tipo&&d.tipo!=="sin_definir"&&d.tipo!=="titular")c+='<div class="campo"><b>Tipo</b><span>'+TIPO[d.tipo]+'</span></div>';
     c+='<div class="campo"><b>Sector</b><span>'+(d.sector||"<i style=\'color:#8a8578\'>sin asignar</i>")+'</span></div>';
     c+='<div class="campo"><b>Parcelas</b><span>'+(d.parcelas?parcTxt(d.parcelas):"<i style='color:#8a8578'>sin registrar</i>")+'</span></div>';
     if(paga)c+='<div class="campo"><b>Riega</b><span>la finca de '+esc(paga.nombre)+'</span></div>';
@@ -455,6 +467,7 @@ function ficha(d){
   const p1=(d.parcelas||"").split(";")[0].trim();
   const sub=(p1||d.sector?'<small>'+[p1?"Pol. "+p1.replace("/",", parc. "):"",d.sector].filter(Boolean).join(" - ")+'</small>':"")
     +(la.length?'<small class="marca">Con apuntes</small>':"")
+    +((d.tipo&&d.tipo!=="sin_definir"&&d.tipo!=="titular")?'<small>'+TIPO[d.tipo]+'</small>':"")
     +(paga?'<small>paga la finca de '+esc(paga.nombre)+'</small>':"");
   const tel=(!junta&&d.telefono)?'<a class="llamar" href="tel:'+String(d.telefono).replace(/\s/g,"")+'">Llamar</a>':"";
   return '<li class="fila '+(d.estado||"sin_datos")+'" data-fid="'+d.id+'"><button class="cab"><span class="gota"></span>'
@@ -490,7 +503,8 @@ function pinta(){
     const f=d.querySelector('[data-np="fecha"]').value,i=d.querySelector('[data-np="importe"]').value,
           w=d.querySelector('[data-np="quien"]').value,
           pp=d.querySelector('[data-np="pagador"]').value;
-    anadePago(id,f,i,w,pp);}));
+    anadePago(id,f,i,w,pp);
+    d.querySelector('[data-np="importe"]').value="";d.querySelector('[data-np="quien"]').value="";}));
   L.querySelectorAll("[data-bp]").forEach(b=>b.addEventListener("click",()=>borraPago(+b.dataset.id,+b.dataset.bp)));
   L.querySelectorAll("[data-aa]").forEach(b=>b.addEventListener("click",()=>{
     const id=+b.dataset.aa,d=b.closest(".nuevo");
