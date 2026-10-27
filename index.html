@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#1a2e22">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Piedra Rubia">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Piedra Rubia</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%20%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2213%22%20fill%3D%22%231a2e22%22%2F%3E%20%3Cpath%20d%3D%22M32%2011c0%200-13%2015.2-13%2024.2C19%2043.4%2024.8%2049%2032%2049s13-5.6%2013-13.8C45%2026.2%2032%2011%2032%2011z%22%20fill%3D%22%232f6f6b%22%2F%3E%20%3Cpath%20d%3D%22M32%2017c0%200-9%2010.8-9%2018.3%200%205.9%204%2010.1%209%2010.1z%22%20fill%3D%22%233d8783%22%20opacity%3D%22.85%22%2F%3E%20%3Ccircle%20cx%3D%2227%22%20cy%3D%2237%22%20r%3D%223.4%22%20fill%3D%22%23f2efe6%22%2F%3E%20%3Ccircle%20cx%3D%2236%22%20cy%3D%2231%22%20r%3D%222.4%22%20fill%3D%22%23f2efe6%22%20opacity%3D%22.75%22%2F%3E%20%3C%2Fsvg%3E">
@@ -119,8 +122,8 @@ header{position:static}body{background:#fff}li.fila .detalle{display:block}}
   <label for="pw">Contrase&ntilde;a</label><input id="pw" type="password" autocomplete="current-password">
   <button id="entrar">Entrar</button><div class="err" id="errLogin"></div>
   <div class="pie">La junta ve importes y puede modificar; el regador consulta y apunta.<br>
-  Los datos estan en el servidor: lo que cambia uno lo ve el otro.
-  <div style="margin-top:10px">&copy; 2026 Comunidad de Regantes Piedra Rubia &middot; v<span id="verEntrada"></span><br>Recopilacion y datos: Alfonso Carrascosa</div></div>
+  Los datos están en el servidor: lo que cambia uno lo ve el otro.
+  <div style="margin-top:10px">&copy; 2026 Comunidad de Regantes Piedra Rubia &middot; v<span id="verEntrada"></span><br>Recopilación y datos: Alfonso Carrascosa</div></div>
 </div></div>
 
 <div id="app" class="wrap oculto">
@@ -132,9 +135,9 @@ header{position:static}body{background:#fff}li.fila .detalle{display:block}}
   <div class="filtros">
     <button data-f="todos" aria-pressed="true">Todos</button>
     <button data-f="al_dia" aria-pressed="false">Al corriente</button>
-    <button data-f="parcial" aria-pressed="false">1a derrama</button>
+    <button data-f="parcial" aria-pressed="false">1.ª derrama</button>
     <button data-f="sin_pago" aria-pressed="false">Sin pagar</button>
-    <button data-f="deuda" aria-pressed="false">Debe ano anterior</button>
+    <button data-f="deuda" aria-pressed="false">Debe año anterior</button>
     <button data-f="apuntes" aria-pressed="false">Con apuntes</button>
     <button data-f="arrendatario" aria-pressed="false">Arrendatarios</button>
     <button data-f="pagador" aria-pressed="false">Solo pagan</button>
@@ -145,9 +148,9 @@ header{position:static}body{background:#fff}li.fila .detalle{display:block}}
   <span><button id="bRecarga">Actualizar</button> <button id="bImp">Imprimir</button></span></p>
 <div class="estado" id="est"></div>
 <div class="barra oculto" id="barraJunta">
-  <button id="bAlta">Anadir comunero</button>
+  <button id="bAlta">Añadir comunero</button>
   <button id="bCuentas">Cuentas</button>
-  <button class="sec" id="bAjustes" title="Tarifa y campana">Tarifa</button>
+  <button class="sec" id="bAjustes" title="Tarifa y campaña">Tarifa</button>
 </div>
 <div class="aviso" id="avisoCamp"></div>
 <div class="panel oculto" id="panelCuentas" style="margin:0 16px 14px;padding:14px;background:#fff;border:1px solid var(--linea);border-radius:3px">
@@ -160,44 +163,44 @@ header{position:static}body{background:#fff}li.fila .detalle{display:block}}
       <option>Electricidad</option><option>Mantenimiento</option><option>Seguro</option>
       <option>Impuestos</option><option>Banco</option><option>Transferencia</option><option>Otros</option></select>
     <input class="co" id="gCon" placeholder="Concepto">
-    <button id="bAddGasto">Anadir gasto</button>
+    <button id="bAddGasto">Añadir gasto</button>
   </div>
   <div id="gMsg" style="margin-top:6px;font-size:12px"></div>
 </div>
 <ul id="lista"></ul>
 <div id="vCampo" class="oculto">
   <div class="tarj">
-    <h3>Riegos - cuanto lleva cada sector sin agua</h3>
+    <h3>Riegos: cuánto lleva cada sector sin agua</h3>
     <div id="secRiego">Cargando...</div>
-    <div style="margin-top:10px;font-size:11.5px;color:var(--gris)">Pulsa "Regado hoy" cuando termines. Si fue otro dia, cambia la fecha antes.</div>
+    <div style="margin-top:10px;font-size:11.5px;color:var(--gris)">Pulsa "Regado hoy" cuando termines. Si fue otro día, cambia la fecha antes.</div>
     <div class="nuevo"><input class="fe" type="date" id="rFecha"><input class="im" id="rHoras" placeholder="Horas (opcional)" inputmode="decimal"></div>
     <div id="rMsg" style="margin-top:6px;font-size:12px"></div>
-    <h3 style="margin-top:14px">Ultimos riegos</h3>
+    <h3 style="margin-top:14px">Últimos riegos</h3>
     <div id="rLista" style="font-size:12.5px"></div>
   </div>
   <div class="tarj">
-    <h3>Avisos y averias</h3>
+    <h3>Avisos y averías</h3>
     <div id="incLista">Cargando...</div>
     <div class="nuevo" style="margin-top:10px">
       <select id="iSector" style="flex:1 1 120px;font:inherit;font-size:14px;padding:7px 8px;border:1.5px solid var(--linea);border-radius:3px;background:#fff"><option value="">Sin sector</option></select>
       <select id="iGrav" style="flex:1 1 110px;font:inherit;font-size:14px;padding:7px 8px;border:1.5px solid var(--linea);border-radius:3px;background:#fff"><option value="normal">Normal</option><option value="urgente">Urgente</option><option value="leve">Leve</option></select>
-      <input class="co" id="iDesc" placeholder="Que pasa: fuga en la tuberia del camino...">
+      <input class="co" id="iDesc" placeholder="¿Qué pasa? Fuga en la tubería del camino…">
       <button id="bAddInc">Apuntar aviso</button>
     </div>
     <div id="iMsg" style="margin-top:6px;font-size:12px"></div>
   </div>
 </div>
-<footer>Los cambios se guardan en el servidor. El Excel sigue siendo el documento valido.
+<footer>Los cambios se guardan en el servidor. El Excel sigue siendo el documento válido.
 <div style="margin-top:9px;padding-top:9px;border-top:1px solid var(--linea)">
-&copy; 2026 Comunidad de Regantes Piedra Rubia &middot; CIF G-23440183 &middot; Villanueva del Arzobispo (Jaen)<br>Recopilacion y datos: <b>Alfonso Carrascosa</b><br>
+&copy; 2026 Comunidad de Regantes Piedra Rubia &middot; CIF G-23440183 &middot; Villanueva del Arzobispo (Jaén)<br>Recopilación y datos: <b>Alfonso Carrascosa</b><br>
 Uso interno de la comunidad. Contiene datos personales de los comuneros: no difundir.<br>
 <span id="pieVer"></span>
 </div></footer>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js" integrity="sha384-UagCvVPT5XXA0Hx+nJYUAGBFseHT9zBgpJMSebsAxl9lciTwbT+39j5VfRjdP5Tp" crossorigin="anonymous"></script>
 <script>
-const APP_VERSION    = "1.8";      // version de esta aplicacion
+const APP_VERSION    = "1.9";      // version de esta aplicacion
 const ESQUEMA_MINIMO = "1.6";      // SQL que necesita para funcionar entera
 const SUPABASE_URL  = "https://oocgrmqhqynleemcqctl.supabase.co";
 const SUPABASE_ANON = "sb_publishable_hlPhA74MyonjKfr7C3KEKQ_G8zUI5yP";
@@ -206,7 +209,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 let ROL=null, COM=[], FIN={}, PAG={}, APU={}, AJU={}, USUARIO="", CAMPANA=2026;
 let filtro="todos", q="", sector="todos", ABIERTO=null;
 const SECS=["Sector 1","Sector 2","Sector 3","Rebombeo"];
-const ET={al_dia:"Al corriente",parcial:"1a derrama",sin_pago:"Sin pagar",sin_datos:"Sin datos"};
+const ET={al_dia:"Al corriente",parcial:"1.ª derrama",sin_pago:"Sin pagar",sin_datos:"Sin datos"};
 const $=id=>document.getElementById(id);
 function cmpVer(a,b){
   const x=String(a).split(".").map(Number),y=String(b).split(".").map(Number);
@@ -237,7 +240,7 @@ async function arranca(){
   if(!user){$("entrada").classList.remove("oculto");$("app").classList.add("oculto");return;}
   USUARIO=user.email;
   const {data:p,error:e}=await sb.from("perfiles").select("rol").eq("id",user.id).single();
-  if(e||!p){$("errLogin").textContent="Tu cuenta no tiene rol asignado (paso 5 de la guia).";await sb.auth.signOut();return;}
+  if(e||!p){$("errLogin").textContent="Tu cuenta no tiene rol asignado (paso 5 de la guía).";await sb.auth.signOut();return;}
   ROL=p.rol;
   $("entrada").classList.add("oculto");$("app").classList.remove("oculto");
   const r=$("rol");r.textContent=ROL==="junta"?"Junta":"Regador";r.classList.toggle("j",ROL==="junta");
@@ -252,13 +255,13 @@ async function carga(){
   CAMPANA=parseInt(AJU.campana_actual||"2026",10);
   const esq=AJU.esquema_version||"1.0";
   const pv=$("pieVer");
-  if(pv)pv.innerHTML="Aplicacion v"+APP_VERSION+" &middot; base de datos v"+esq;
+  if(pv)pv.innerHTML="Aplicación v"+APP_VERSION+" &middot; base de datos v"+esq;
   if(cmpVer(esq,ESQUEMA_MINIMO)<0){
-    aviso("La base de datos esta en la version "+esq+" y esta aplicacion necesita la "+ESQUEMA_MINIMO
-      +". Falta ejecutar algun archivo SQL; puede que algo no funcione.","mal");
+    aviso("La base de datos está en la versión "+esq+" y esta aplicación necesita la "+ESQUEMA_MINIMO
+      +". Falta ejecutar algún archivo SQL; puede que algo no funcione.","mal");
   }
-  $("avisoCamp").innerHTML="Campana <b>"+CAMPANA+"</b>. Tarifa: "+(AJU.euros_oliva_derrama||2)+" EUR por oliva y derrama, "
-    +(AJU.derramas_ano||2)+" derramas al ano. <b>1a derrama</b> significa que ha pagado la primera y le falta la segunda; no es un impago.";
+  $("avisoCamp").innerHTML="Campaña <b>"+CAMPANA+"</b>. Tarifa: "+(AJU.euros_oliva_derrama||2)+" EUR por oliva y derrama, "
+    +(AJU.derramas_ano||2)+" derramas al año. <b>1.ª derrama</b> significa que ha pagado la primera y le falta la segunda; no es un impago.";
   document.querySelector('[data-f="deuda"]').textContent="Debe "+(CAMPANA-1);
 
   const {data:com,error:e1}=await sb.from("comuneros").select("*").order("nombre");
@@ -290,7 +293,7 @@ async function guardaCampo(id,campo,valor){
 }
 async function guardaOlivas(id,valor){
   const n=valor===""?null:parseInt(valor,10);
-  if(valor!==""&&(isNaN(n)||n<0)){aviso("Las olivas deben ser un numero","mal");return;}
+  if(valor!==""&&(isNaN(n)||n<0)){aviso("Las olivas deben ser un número","mal");return;}
   aviso("Guardando olivas...","gua");
   const {data,error}=await sb.from("finanzas").upsert({comunero_id:id,olivas:n},{onConflict:"comunero_id"}).select().single();
   if(error){aviso("NO se ha guardado: "+error.message,"mal");return;}
@@ -302,7 +305,7 @@ async function guardaOlivas(id,valor){
 async function anadePago(id,f,imp,con,ppid){
   const n=parseFloat(String(imp).replace(",","."));
   if(!f){aviso("Falta la fecha del pago","mal");return;}
-  if(isNaN(n)||n<=0){aviso("El importe no es valido","mal");return;}
+  if(isNaN(n)||n<=0){aviso("El importe no es válido","mal");return;}
   aviso("Guardando pago...","gua");
   const quien=ppid?COM.find(x=>x.id===+ppid):null;
   // pagado_por: si es un comunero, su nombre; si no, el texto libre (mujer, hijo, yerno...)
@@ -314,10 +317,10 @@ async function anadePago(id,f,imp,con,ppid){
   PAG[id].sort((a,b)=>b.fecha.localeCompare(a.fecha));
   const {data:c}=await sb.from("comuneros").select("estado,debe_2025").eq("id",id).single();
   if(c){const x=COM.find(y=>y.id===id);if(x){x.estado=c.estado;x.debe_2025=c.debe_2025;}}
-  aviso("Pago anadido","bien");refresca(id);
+  aviso("Pago añadido","bien");refresca(id);
 }
 async function borraPago(id,pid){
-  if(!confirm("Borrar este pago?"))return;
+  if(!confirm("¿Borrar este pago?"))return;
   aviso("Borrando...","gua");
   const {error}=await sb.from("pagos").delete().eq("id",pid);
   if(error){aviso("No se pudo borrar: "+error.message,"mal");return;}
@@ -327,7 +330,7 @@ async function borraPago(id,pid){
   aviso("Pago borrado","bien");refresca(id);
 }
 async function anadeApunte(id,texto,fh){
-  if(!texto.trim()){aviso("El apunte esta vacio","mal");return;}
+  if(!texto.trim()){aviso("El apunte está vacío","mal");return;}
   aviso("Guardando apunte...","gua");
   const {data,error}=await sb.from("apuntes").insert({comunero_id:id,texto:texto.trim(),autor:USUARIO,fecha_hecho:fh||null}).select().single();
   if(error){aviso("NO se ha guardado: "+error.message,"mal");return;}
@@ -335,7 +338,7 @@ async function anadeApunte(id,texto,fh){
   aviso("Apunte guardado","bien");refresca(id);
 }
 async function borraApunte(id,aid){
-  if(!confirm("Borrar este apunte?"))return;
+  if(!confirm("¿Borrar este apunte?"))return;
   const {error}=await sb.from("apuntes").delete().eq("id",aid);
   if(error){aviso("No se pudo borrar: "+error.message,"mal");return;}
   APU[id]=(APU[id]||[]).filter(a=>a.id!==aid);
@@ -351,16 +354,16 @@ $("bAlta").onclick=async function(){
   ABIERTO=data.id;aviso("Comunero creado. Rellena sus datos.","bien");pintaSectores();pinta();
 };
 async function borraComunero(id,nombre){
-  if(!confirm("Borrar a "+nombre+" y TODOS sus pagos y apuntes? No se puede deshacer."))return;
-  if(!confirm("Seguro del todo? Escribe mentalmente que si. Se borra definitivamente."))return;
+  if(!confirm("¿Borrar a "+nombre+" y TODOS sus pagos y apuntes? No se puede deshacer."))return;
+  if(!confirm("¿Seguro del todo? Escribe mentalmente que sí. Se borra definitivamente."))return;
   const {error}=await sb.from("comuneros").delete().eq("id",id);
   if(error){aviso("No se pudo borrar: "+error.message,"mal");return;}
   COM=COM.filter(c=>c.id!==id);aviso("Comunero borrado","bien");pintaSectores();pinta();
 }
 $("bAjustes").onclick=async function(){
   const t=prompt("Euros por oliva y derrama:",AJU.euros_oliva_derrama||"2");if(t===null)return;
-  const d=prompt("Derramas al ano:",AJU.derramas_ano||"2");if(d===null)return;
-  const c=prompt("Campana actual (ano):",AJU.campana_actual||"2026");if(c===null)return;
+  const d=prompt("Derramas al año:",AJU.derramas_ano||"2");if(d===null)return;
+  const c=prompt("Campaña actual (año):",AJU.campana_actual||"2026");if(c===null)return;
   aviso("Guardando ajustes...","gua");
   const filas=[{clave:"euros_oliva_derrama",valor:String(t).trim()},{clave:"derramas_ano",valor:String(d).trim()},{clave:"campana_actual",valor:String(c).trim()}];
   const {error}=await sb.from("ajustes").upsert(filas,{onConflict:"clave"});
@@ -411,18 +414,18 @@ function ficha(d){
     c+='<div class="campo"><b>Paga finca de</b><select data-id="'+d.id+'" data-c="paga_por_id"><option value="">nadie, es la suya</option>'
       +COM.filter(x=>x.id!==d.id).map(x=>'<option value="'+x.id+'"'+(d.paga_por_id===x.id?" selected":"")+'>'+esc(x.nombre)+'</option>').join("")+'</select></div>';
     if(lePagan.length)c+='<div class="campo"><b>Le paga</b><span>'+lePagan.map(x=>esc(x.nombre)).join(", ")+'</span></div>';
-    [["parcelas","Parcelas","20/241 ; 20/92"],["telefono","Telefono","600 000 000"],["mote","Mote",""],
-     ["direccion","Direccion",""],["poblacion","Poblacion",""],["nota","Nota",""]].forEach(x=>{
+    [["parcelas","Parcelas","20/241 ; 20/92"],["telefono","Teléfono","600 000 000"],["mote","Mote",""],
+     ["direccion","Dirección",""],["poblacion","Población",""],["nota","Nota",""]].forEach(x=>{
       c+='<div class="campo"><b>'+x[1]+'</b><input data-id="'+d.id+'" data-c="'+x[0]+'" value="'+esc(d[x[0]])+'" placeholder="'+x[2]+'"></div>';});
-    c+='<div class="campo"><b>Olivas</b><input data-id="'+d.id+'" data-ol="1" value="'+(f&&f.olivas!=null?f.olivas:"")+'" placeholder="numero de olivas" inputmode="numeric"></div>';
-    c+='<div class="campo"><b>Cuota/ano</b><span>'+(f&&f.cuota!=null?eur(f.cuota):"se calcula al poner las olivas")+'</span></div>';
+    c+='<div class="campo"><b>Olivas</b><input data-id="'+d.id+'" data-ol="1" value="'+(f&&f.olivas!=null?f.olivas:"")+'" placeholder="número de olivas" inputmode="numeric"></div>';
+    c+='<div class="campo"><b>Cuota/año</b><span>'+(f&&f.cuota!=null?eur(f.cuota):"se calcula al poner las olivas")+'</span></div>';
 
     c+='<div class="sec2"><h4>Pagos</h4>';
     if(lp.length){
       c+=lp.map(p=>'<div class="pago"><span class="f">'+fecha(p.fecha)+'</span><span class="i">'+eur(p.importe)+'</span>'
-        +'<span class="c">'+(p.pagado_por&&(p.pagado_por_id!==d.id)?'<b>lo ingreso '+esc(p.pagado_por)+'</b>':esc(p.pagado_por||p.concepto||""))+'</span>'
+        +'<span class="c">'+(p.pagado_por&&(p.pagado_por_id!==d.id)?'<b>lo ingresó '+esc(p.pagado_por)+'</b>':esc(p.pagado_por||p.concepto||""))+'</span>'
         +'<button data-bp="'+p.id+'" data-id="'+d.id+'">Borrar</button></div>').join("");
-    } else c+='<div style="color:#8a8578;font-size:12.5px">Todavia no hay pagos apuntados.</div>';
+    } else c+='<div style="color:#8a8578;font-size:12.5px">Todavía no hay pagos apuntados.</div>';
     const sA=sumaAno(d.id,CAMPANA), sB=sumaAno(d.id,CAMPANA-1);
     c+='<div class="total">'+CAMPANA+': <b>'+eur(sA)+'</b>'+(f&&f.cuota!=null?" de "+eur(f.cuota)+" ("+(sA-f.cuota>=0?"+":"")+eur(sA-f.cuota)+")":"")
       +' &nbsp;|&nbsp; '+(CAMPANA-1)+': <b>'+eur(sB)+'</b></div>';
@@ -431,15 +434,15 @@ function ficha(d){
       +'<select class="co" data-np="pagador" data-id="'+d.id+'" style="font:inherit;font-size:14px;padding:7px 8px;border:1.5px solid var(--linea);border-radius:3px;background:#fff">'
       +'<option value="">Lo paga el mismo</option>'
       +COM.filter(x=>x.id!==d.id).map(x=>'<option value="'+x.id+'">Lo paga '+esc(x.nombre)+'</option>').join("")+'</select>'
-      +'<input class="co" data-np="quien" data-id="'+d.id+'" placeholder="Quien lo ingresa (mujer, hijo...) o concepto">'
-      +'<button data-ap="'+d.id+'">Anadir pago</button></div>';
+      +'<input class="co" data-np="quien" data-id="'+d.id+'" placeholder="Quién lo ingresa (mujer, hijo…) o concepto">'
+      +'<button data-ap="'+d.id+'">Añadir pago</button></div>';
     const hechos=Object.values(PAG).flat().filter(p=>p.pagado_por_id===d.id&&p.comunero_id!==d.id);
     if(hechos.length){
       const tot=hechos.reduce((s,p)=>s+Number(p.importe),0);
       const porQuien={};hechos.forEach(p=>{const t=COM.find(x=>x.id===p.comunero_id);
         const k=t?t.nombre:"?";porQuien[k]=(porQuien[k]||0)+Number(p.importe);});
       c+='<div class="total" style="margin-top:8px;padding-top:8px;border-top:1px dotted var(--linea)">'
-       +'Ademas ha pagado por otros: <b>'+eur(tot)+'</b><br>'
+       +'Además ha pagado por otros: <b>'+eur(tot)+'</b><br>'
        +Object.entries(porQuien).map(x=>esc(x[0])+": "+eur(x[1])).join(" &middot; ")+'</div>';
     }
     c+='</div>';
@@ -449,8 +452,8 @@ function ficha(d){
     c+='<div class="campo"><b>Parcelas</b><span>'+(d.parcelas?parcTxt(d.parcelas):"<i style='color:#8a8578'>sin registrar</i>")+'</span></div>';
     if(paga)c+='<div class="campo"><b>Riega</b><span>la finca de '+esc(paga.nombre)+'</span></div>';
     if(lePagan.length)c+='<div class="campo"><b>Le paga</b><span>'+lePagan.map(x=>esc(x.nombre)).join(", ")+'</span></div>';
-    if(d.direccion)c+='<div class="campo"><b>Direccion</b><span>'+esc(d.direccion)+(d.poblacion?", "+esc(d.poblacion):"")+'</span></div>';
-    c+='<div class="campo"><b>Telefono</b><span>'+(d.telefono?'<a href="tel:'+String(d.telefono).replace(/\s/g,"")+'">'+esc(d.telefono)+'</a>':"-")+'</span></div>';
+    if(d.direccion)c+='<div class="campo"><b>Dirección</b><span>'+esc(d.direccion)+(d.poblacion?", "+esc(d.poblacion):"")+'</span></div>';
+    c+='<div class="campo"><b>Teléfono</b><span>'+(d.telefono?'<a href="tel:'+String(d.telefono).replace(/\s/g,"")+'">'+esc(d.telefono)+'</a>':"-")+'</span></div>';
     if(d.nota)c+='<div class="campo"><b>Nota junta</b><span>'+esc(d.nota)+'</span></div>';
   }
 
@@ -461,7 +464,7 @@ function ficha(d){
   else c+='<div style="color:#8a8578;font-size:12.5px">Sin apuntes.</div>';
   c+='<div class="nuevo"><textarea data-na="texto" data-id="'+d.id+'" placeholder="p. ej. el 12 de agosto vino a pagar su yerno"></textarea>'
     +'<input class="fe" type="date" data-na="fecha" data-id="'+d.id+'" title="fecha del hecho, si no es hoy">'
-    +'<button data-aa="'+d.id+'">Anadir apunte</button></div></div>';
+    +'<button data-aa="'+d.id+'">Añadir apunte</button></div></div>';
 
   if(junta)c+='<button class="borrar" data-bc="'+d.id+'" data-nom="'+esc(d.nombre)+'">Borrar comunero</button>';
 
@@ -528,7 +531,7 @@ function pintaCuentas(){
   const anos=[...new Set(GAS.map(g=>String(g.fecha).slice(0,4)).concat(
     Object.values(PAG).flat().map(p=>String(p.fecha).slice(0,4))))].sort();
   let h='<table style="width:100%;border-collapse:collapse;font-size:13px">'
-   +'<tr style="text-align:right"><th style="text-align:left;padding:4px 0">Ano</th><th>Ingresos</th><th>Gastos</th><th>Saldo</th></tr>';
+   +'<tr style="text-align:right"><th style="text-align:left;padding:4px 0">Año</th><th>Ingresos</th><th>Gastos</th><th>Saldo</th></tr>';
   let ti=0,tg=0;
   anos.forEach(a=>{
     const ing=Object.values(PAG).flat().filter(p=>String(p.fecha).slice(0,4)===a).reduce((s,p)=>s+Number(p.importe),0);
@@ -543,7 +546,7 @@ function pintaCuentas(){
   const cuotaTot=Object.values(FIN).reduce((s,f)=>s+(Number(f.cuota)||0),0);
   const cobrado=Object.values(PAG).flat().filter(p=>String(p.fecha).slice(0,4)===String(CAMPANA)).reduce((s,p)=>s+Number(p.importe),0);
   h+='<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--linea)">'
-   +'Si pagaran todos: <b>'+eur(cuotaTot)+'</b> al ano &nbsp;|&nbsp; cobrado en '+CAMPANA+': <b>'+eur(cobrado)+'</b>'
+   +'Si pagaran todos: <b>'+eur(cuotaTot)+'</b> al año &nbsp;|&nbsp; cobrado en '+CAMPANA+': <b>'+eur(cobrado)+'</b>'
    +'<br><span style="color:var(--seco)">Pendiente de cobrar: <b>'+eur(cuotaTot-cobrado)+'</b></span></div>';
   const porCat={};GAS.forEach(g=>{porCat[g.categoria]=(porCat[g.categoria]||0)+Number(g.importe);});
   const cats=Object.entries(porCat).sort((a,b)=>b[1]-a[1]);
@@ -560,10 +563,10 @@ $("bAddGasto").onclick=async function(){
         cat=$("gCat").value,con=$("gCon").value;
   const m=$("gMsg");
   if(!f){m.innerHTML='<span style="color:var(--seco)">Falta la fecha</span>';return;}
-  if(isNaN(i)||i===0){m.innerHTML='<span style="color:var(--seco)">Importe no valido</span>';return;}
+  if(isNaN(i)||i===0){m.innerHTML='<span style="color:var(--seco)">Importe no válido</span>';return;}
   const {error}=await sb.from("gastos").insert({fecha:f,importe:i,categoria:cat,concepto:con});
   if(error){m.innerHTML='<span style="color:var(--seco)">No se pudo guardar: '+error.message+'</span>';return;}
-  m.innerHTML='<span style="color:var(--verde)">Gasto anadido</span>';
+  m.innerHTML='<span style="color:var(--verde)">Gasto añadido</span>';
   $("gImporte").value="";$("gCon").value="";await cargaGastos();
 };
 
@@ -590,7 +593,7 @@ async function cargaCampo(){
   const sel=$("iSector");
   if(sel.options.length<=1)SECS.forEach(s=>{const o=document.createElement("option");o.value=s;o.textContent=s;sel.appendChild(o);});
   const {data:r,error:e1}=await sb.from("riegos").select("*").order("fecha",{ascending:false}).limit(60);
-  if(e1){$("secRiego").innerHTML='<span style="color:var(--seco)">No se pudo cargar: '+e1.message+'. Falta ejecutar 08_gestion.sql?</span>';}
+  if(e1){$("secRiego").innerHTML='<span style="color:var(--seco)">No se pudo cargar: '+e1.message+'. ¿Falta ejecutar 08_gestion.sql?</span>';}
   else{RIE=r||[];pintaRiegos();}
   const {data:i,error:e2}=await sb.from("incidencias").select("*").order("fecha",{ascending:false}).limit(50);
   if(e2){$("incLista").innerHTML='<span style="color:var(--seco)">No se pudo cargar: '+e2.message+'</span>';}
@@ -603,7 +606,7 @@ function pintaRiegos(){
     const ult=RIE.filter(r=>r.sector===s).map(r=>r.fecha).sort().pop();
     let txt="nunca",cls="";
     if(ult){const d=Math.round((hoy-new Date(ult))/86400000);
-      txt=(d===0?"hoy":d===1?"ayer":"hace "+d+" dias");if(d>=10)cls=" viejo";}
+      txt=(d===0?"hoy":d===1?"ayer":"hace "+d+" días");if(d>=10)cls=" viejo";}
     h+='<div class="secfila"><span class="nm">'+s+'</span>'
      +'<span class="dd'+cls+'"><b>'+txt+'</b>'+(ult?fecha(ult):"sin registrar")+'</span>'
      +'<button data-rs="'+s+'">Regado</button></div>';
@@ -613,9 +616,9 @@ function pintaRiegos(){
   $("rLista").innerHTML=RIE.slice(0,12).map(r=>'<div style="padding:3px 0;border-bottom:1px dotted var(--linea)">'
     +fecha(r.fecha)+' &middot; <b>'+esc(r.sector)+'</b>'+(r.horas?' &middot; '+r.horas+' h':"")
     +' <button data-br="'+r.id+'" style="font:inherit;font-size:10.5px;background:none;border:1px solid var(--linea);border-radius:3px;padding:1px 6px;cursor:pointer;color:var(--seco);margin-left:6px">Borrar</button></div>').join("")
-    ||'<span style="color:var(--gris)">Aun no hay riegos apuntados.</span>';
+    ||'<span style="color:var(--gris)">Aún no hay riegos apuntados.</span>';
   $("rLista").querySelectorAll("[data-br]").forEach(b=>b.addEventListener("click",async()=>{
-    if(!confirm("Borrar este riego?"))return;
+    if(!confirm("¿Borrar este riego?"))return;
     await sb.from("riegos").delete().eq("id",+b.dataset.br);cargaCampo();}));
 }
 async function apuntaRiego(sector){
@@ -636,7 +639,7 @@ function pintaIncid(){
   $("incLista").querySelectorAll("[data-ri]").forEach(b=>b.addEventListener("click",async()=>{
     await sb.from("incidencias").update({estado:"resuelta",resuelta_el:hoyISO()}).eq("id",+b.dataset.ri);cargaCampo();}));
   $("incLista").querySelectorAll("[data-bi]").forEach(b=>b.addEventListener("click",async()=>{
-    if(!confirm("Borrar este aviso?"))return;
+    if(!confirm("¿Borrar este aviso?"))return;
     await sb.from("incidencias").delete().eq("id",+b.dataset.bi);cargaCampo();}));
 }
 function inc1(i){
@@ -649,7 +652,7 @@ function inc1(i){
 }
 $("bAddInc").onclick=async function(){
   const d=$("iDesc").value.trim(),m=$("iMsg");
-  if(!d){m.innerHTML='<span style="color:var(--seco)">Escribe que pasa</span>';return;}
+  if(!d){m.innerHTML='<span style="color:var(--seco)">Escribe qué pasa</span>';return;}
   m.textContent="Guardando...";
   const {error}=await sb.from("incidencias").insert({fecha:hoyISO(),sector:$("iSector").value,
     gravedad:$("iGrav").value,descripcion:d,abierta_por:USUARIO});
@@ -659,4 +662,14 @@ $("bAddInc").onclick=async function(){
 
 const ve=$("verEntrada"); if(ve)ve.textContent=APP_VERSION;
 arranca();
-</script></body></html>
+/* Instalable como app: service worker (solo archivos de la app, nunca datos) y botón "Instalar app" */
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))
+  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+(function(){
+  let aviso=null;const b=$("btnInstalar");
+  window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();aviso=e;b.hidden=false;});
+  b.addEventListener("click",()=>{if(!aviso)return;aviso.prompt();aviso.userChoice.then(()=>{aviso=null;b.hidden=true;});});
+  window.addEventListener("appinstalled",()=>{aviso=null;b.hidden=true;});
+})();
+</script><button id="btnInstalar" type="button" hidden style="position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:99;border:0;border-radius:999px;padding:11px 16px;font:600 14px/1 inherit;background:#1a2e22;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.28);cursor:pointer">📲 Instalar app</button>
+</body></html>

@@ -1,0 +1,17 @@
+{
+  "name": "Piedra Rubia · Comunidad de regantes",
+  "short_name": "Piedra Rubia",
+  "description": "Comuneros, pagos, riegos y avisos de la Comunidad de Regantes Piedra Rubia.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "id": "/piedrasrubias/",
+  "display": "standalone",
+  "background_color": "#f2efe6",
+  "theme_color": "#1a2e22",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
